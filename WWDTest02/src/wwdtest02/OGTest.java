@@ -9,11 +9,18 @@ package wwdtest02;
 import javax.media.opengl.*;
 import javax.media.opengl.awt.GLCanvas;
 import javax.swing.JFrame;
+import javax.media.opengl.glu.GLU;
+
+import com.jogamp.opengl.util.FPSAnimator;
+
+
 /**
  *
  * @author ZZL
  */
 public class OGTest implements GLEventListener {
+    
+    private GLU glu=new GLU();
 
     @Override
     public void init(GLAutoDrawable glad) {
@@ -27,16 +34,28 @@ public class OGTest implements GLEventListener {
     public void display(GLAutoDrawable glad) {
 
         GL2 gl = glad.getGL().getGL2();
+        
+        gl.glTranslatef(0.25f,0,0);
 
         gl.glBegin(GL2.GL_LINES);
         gl.glVertex3f(0.5f, -0.5f, 0);
         gl.glVertex3f(-0.5f, 0.5f, 0);
-
         gl.glEnd();
+
+        gl.glBegin(GL2.GL_LINES);
+        gl.glVertex3f(-0.75f, 0f, 3f);
+        gl.glVertex3f(0f, -0.75f, 3f);
+        gl.glEnd();
+
     }
 
     @Override
-    public void reshape(GLAutoDrawable glad, int i, int i1, int i2, int i3) {
+    public void reshape(GLAutoDrawable glad, int i, int y, int width, int height) {
+        GL2 gl=glad.getGL().getGL2();
+        gl.glViewport(0,0,width,height);
+        gl.glMatrixMode((GL2.GL_PROJECTION));
+        gl.glLoadIdentity();
+        //gl.
     }
     
     
