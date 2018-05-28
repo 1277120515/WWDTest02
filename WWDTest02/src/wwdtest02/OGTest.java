@@ -25,6 +25,14 @@ public class OGTest implements GLEventListener {
 
     @Override
     public void display(GLAutoDrawable glad) {
+
+        GL2 gl = glad.getGL().getGL2();
+
+        gl.glBegin(GL2.GL_LINES);
+        gl.glVertex3f(0.5f, -0.5f, 0);
+        gl.glVertex3f(-0.5f, 0.5f, 0);
+
+        gl.glEnd();
     }
 
     @Override
