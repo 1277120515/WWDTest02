@@ -262,7 +262,9 @@ public class Box extends RigidShape
      * @param type          the data type of the elements to be drawn
      * @param elementBuffer the buffer containing the list of elements to be drawn
      * @param shapeData     this shape's current globe-specific shape data
+     * @param face
      */
+    @Override
     protected void drawGeometry(DrawContext dc, int mode, int count, int type, Buffer elementBuffer,
         ShapeData shapeData, int face)
     {
