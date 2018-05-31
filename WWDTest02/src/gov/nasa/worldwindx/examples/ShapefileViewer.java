@@ -20,9 +20,11 @@ import java.awt.event.*;
 import java.io.File;
 
 /**
- * Illustrates how to import ESRI Shapefiles into WorldWind. This uses a <code>{@link ShapefileLayerFactory}</code> to
- * parse a Shapefile's contents and convert the shapefile into an equivalent WorldWind shape. This provides examples of
- * importing a Shapefile on the local hard drive and importing a Shapefile at a remote URL.
+ * Illustrates how to import ESRI Shapefiles into WorldWind. This uses a
+ * <code>{@link ShapefileLayerFactory}</code> to parse a Shapefile's contents
+ * and convert the shapefile into an equivalent WorldWind shape. This provides
+ * examples of importing a Shapefile on the local hard drive and importing a
+ * Shapefile at a remote URL.
  *
  * @author Patrick Murris
  * @version $Id: ShapefileViewer.java 3212 2015-06-18 02:45:56Z tgaskins $
@@ -30,7 +32,7 @@ import java.io.File;
 public class ShapefileViewer extends ApplicationTemplate
 {
     public static class AppFrame extends ApplicationTemplate.AppFrame
-        implements ShapefileLayerFactory.CompletionCallback
+            implements ShapefileLayerFactory.CompletionCallback
     {
         protected RandomShapeAttributes randomAttrs = new RandomShapeAttributes();
 
@@ -44,7 +46,7 @@ public class ShapefileViewer extends ApplicationTemplate
             this.randomAttrs.nextAttributes(); // display each shapefile in different attributes
 
             ShapefileLayerFactory factory = (ShapefileLayerFactory) WorldWind.createConfigurationComponent(
-                AVKey.SHAPEFILE_LAYER_FACTORY);
+                    AVKey.SHAPEFILE_LAYER_FACTORY);
             factory.setNormalPointAttributes(this.randomAttrs.asPointAttributes());
             factory.setNormalShapeAttributes(this.randomAttrs.asShapeAttributes());
             factory.createFromShapefileSource(source, this); // add the layer in the completion callback
@@ -114,8 +116,7 @@ public class ShapefileViewer extends ApplicationTemplate
                             appFrame.loadShapefile(file);
                         }
                     }
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     e.printStackTrace();
                 }
@@ -135,8 +136,7 @@ public class ShapefileViewer extends ApplicationTemplate
                     {
                         appFrame.loadShapefile(status.trim());
                     }
-                }
-                catch (Exception e)
+                } catch (Exception e)
                 {
                     e.printStackTrace();
                 }

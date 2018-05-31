@@ -3,7 +3,6 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-
 package gov.nasa.worldwind.ogc.kml.io;
 
 import java.io.*;
@@ -52,7 +51,7 @@ public interface KMLDoc
      * @return an absolute path or URL to the file, or null if the file does not exist.
      *
      * @throws IllegalArgumentException if the specified path is null.
-     * @throws java.io.IOException if an error occurs while attempting to read the support file.
+     * @throws java.io.IOException      if an error occurs while attempting to read the support file.
      */
     String getSupportFilePath(String path) throws IOException;
 }

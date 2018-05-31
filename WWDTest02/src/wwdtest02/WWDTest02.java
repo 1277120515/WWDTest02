@@ -22,23 +22,22 @@ import gov.nasa.worldwindx.examples.Boxes;
  *
  * @author ZZL
  */
-public class WWDTest02 extends ApplicationTemplate {
-
-    public static class AppFrame extends ApplicationTemplate.AppFrame {
-
-        public AppFrame() {
+public class WWDTest02 extends ApplicationTemplate
+{
+    public static class AppFrame extends ApplicationTemplate.AppFrame
+    {
+        public AppFrame()
+        {
             RenderableLayer layer = new RenderableLayer();
-
-            MyRender mr=new MyRender();
+            MyRender mr = new MyRender();
             layer.addRenderable(mr);
-            
             // Add the layer to the model.
             insertBeforeCompass(getWwd(), layer);
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
         ApplicationTemplate.start("WorldWind Boxes", WWDTest02.AppFrame.class);
     }
-
 }

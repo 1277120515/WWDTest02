@@ -13,14 +13,15 @@ import javax.media.opengl.GL2;
  *
  * @author yf
  */
-public class MyRender implements Renderable {
-
+public class MyRender implements Renderable
+{
     @Override
-    public void render(DrawContext dc) {
-
+    public void render(DrawContext dc)
+    {
         GL2 gl = dc.getGL().getGL2();
-        gl.glTranslatef(0.25f, 0, 0);
 
+
+        gl.glTranslatef(0.25f, 0, 0);
         gl.glBegin(GL2.GL_LINES);
         gl.glVertex3f(0.5f, -0.5f, 0);
         gl.glVertex3f(-0.5f, 0.5f, 0);
@@ -31,5 +32,4 @@ public class MyRender implements Renderable {
         gl.glVertex3f(0f, -0.75f, 3f);
         gl.glEnd();
     }
-
 }
