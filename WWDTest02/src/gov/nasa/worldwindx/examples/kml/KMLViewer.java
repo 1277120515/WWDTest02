@@ -3,7 +3,6 @@
  * National Aeronautics and Space Administration.
  * All Rights Reserved.
  */
-
 package gov.nasa.worldwindx.examples.kml;
 
 import gov.nasa.worldwind.WorldWind;
@@ -209,8 +208,7 @@ public class KMLViewer extends ApplicationTemplate
                         appFrame.addKMLLayer(finalKMLRoot);
                     }
                 });
-            }
-            catch (Exception e)
+            } catch (Exception e)
             {
                 e.printStackTrace();
             }
@@ -238,16 +236,24 @@ public class KMLViewer extends ApplicationTemplate
         KMLAbstractFeature rootFeature = kmlRoot.getFeature();
 
         if (rootFeature != null && !WWUtil.isEmpty(rootFeature.getName()))
+        {
             return rootFeature.getName();
+        }
 
         if (kmlSource instanceof File)
+        {
             return ((File) kmlSource).getName();
+        }
 
         if (kmlSource instanceof URL)
+        {
             return ((URL) kmlSource).getPath();
+        }
 
         if (kmlSource instanceof String && WWIO.makeURL((String) kmlSource) != null)
+        {
             return WWIO.makeURL((String) kmlSource).getPath();
+        }
 
         return "KML Layer";
     }

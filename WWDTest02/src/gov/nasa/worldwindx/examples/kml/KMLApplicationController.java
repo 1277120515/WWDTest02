@@ -90,6 +90,7 @@ public class KMLApplicationController implements SelectListener, PropertyChangeL
      *
      * @param event Select event.
      */
+    @Override
     public void selected(SelectEvent event)
     {
         if (event.isLeftClick())
@@ -179,24 +180,28 @@ public class KMLApplicationController implements SelectListener, PropertyChangeL
     protected void onNetworkLinkRefreshed(KMLNetworkLink networkLink)
     {
         if (networkLink == null)
+        {
             return;
+        }
 
         KMLRoot kmlRoot = networkLink.getNetworkResource();
         if (kmlRoot == null)
+        {
             return;
+        }
 
         if (Boolean.TRUE.equals(networkLink.getFlyToView()))
         {
             if (kmlRoot.getNetworkLinkControl() != null
-                && kmlRoot.getNetworkLinkControl().getView() != null)
+                    && kmlRoot.getNetworkLinkControl().getView() != null)
             {
                 this.moveTo(kmlRoot.getNetworkLinkControl().getView());
                 this.wwd.redraw();
-            }
-            else if (kmlRoot.getFeature() != null
-                && kmlRoot.getFeature().getView() != null)
-            {
-                this.moveTo(kmlRoot.getFeature().getView());
+            } else
+                if (kmlRoot.getFeature() != null
+                        && kmlRoot.getFeature().getView() != null)
+                {
+                    this.moveTo(kmlRoot.getFeature().getView());
                 this.wwd.redraw();
             }
         }
