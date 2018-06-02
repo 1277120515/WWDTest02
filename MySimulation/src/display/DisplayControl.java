@@ -16,7 +16,7 @@ import display.iostruct.*;
  */
 public class DisplayControl
 {
-    public RenderableLayer displayLayer;
+    
 
     public boolean isShowSatelliteOrbit = false;
     public boolean isShowSensor = false;
@@ -25,6 +25,8 @@ public class DisplayControl
     public boolean isShowCourageRange = false;
     
     public PassDisplay[] passDisplayArray;
+    
+    private RenderableLayer displayLayer;
 
     public DisplayControl(RenderableLayer layer)
     {

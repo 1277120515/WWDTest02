@@ -23,7 +23,6 @@ import java.util.Arrays;
 public class PassDisplay
 {
 
-    
     public String satelliteName;
     public Geometry ground;
     

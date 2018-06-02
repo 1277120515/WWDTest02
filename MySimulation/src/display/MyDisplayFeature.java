@@ -32,7 +32,8 @@ public class MyDisplayFeature  extends AbstractFeature  {
 
         super.initialize(controller);
         if (dialog == null) {
-            dialog = new MyDisplayDialog(this.controller ,this.controller.getFrame());
+            //dialog = new MyDisplayDialog(this.controller ,this.controller.getFrame());
+            dialog = new MyTestDialog(this.controller ,this.controller.getFrame());
         }
         this.dialog.setResizable(false);
         this.addToToolBar();

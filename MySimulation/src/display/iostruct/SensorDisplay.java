@@ -12,7 +12,7 @@ import gov.nasa.worldwind.geom.Position;
  *
  * @author ZZL
  */
-class SensorDisplay
+public class SensorDisplay
 {
     public Position[] leftMaxPosArray;
     public Position[] rightMaxPosArray;
