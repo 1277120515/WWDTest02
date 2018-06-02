@@ -45,7 +45,7 @@ public class PassDisplay
 
         ArrayList<Position> pathPositions=new ArrayList<Position>();
         int index=0;
-        for(Time temp=startTime.clone();temp.afterOrEqual(currentTime)&&temp.afterOrEqual(endTime);temp.addSeconds(1))
+        for(Time temp=startTime.clone();temp.beforeOrEqual(currentTime)&&temp.beforeOrEqual(endTime);temp.addSeconds(1))
         {
             pathPositions.add(satellitePosArray[index]);
             index++;

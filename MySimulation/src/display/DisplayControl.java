@@ -59,7 +59,7 @@ public class DisplayControl
                     //当前时间currentTime在passDisplay的起止时间之间：显示轨道，当前传感器三角，当前覆盖区域，最大覆盖区域
                     if (isShowSatelliteOrbit == true)
                     {
-
+                        passDisplay.DisplayOrbit(displayLayer, currentTime);
                     }
                     if (isShowSensor == true)
                     {
