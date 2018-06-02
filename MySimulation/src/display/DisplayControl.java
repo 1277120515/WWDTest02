@@ -34,28 +34,47 @@ public class DisplayControl
     
 
     public Time currentTime;
-
     void display()
     {
         if (passDisplayArray != null && passDisplayArray.length > 0)
         {
             for (PassDisplay passDisplay : passDisplayArray)
             {
+                //遍历所有的过境场景
                 Time startTime = passDisplay.startTime;
-                Time endTime = startTime.clone();
-                //endTime.addSeconds(passDisplay.totalSecond);
+                Time endTime = passDisplay.endTime;
 
                 if (currentTime.before(startTime))
                 {
                     //当前时间currentTime未达到passDisplay的开始时间：仅显示轨道
-                    if(isShowSatelliteOrbit==true)
+                    if (isShowSatelliteOrbit == true)
                     {
-                        
+
                     }
 
                 } else if (startTime.before(currentTime) && currentTime.before(endTime))
                 {
                     //当前时间currentTime在passDisplay的起止时间之间：显示轨道，当前传感器三角，当前覆盖区域，最大覆盖区域
+                    if (isShowSatelliteOrbit == true)
+                    {
+
+                    }
+                    if (isShowSensor == true)
+                    {
+
+                    }
+                    if (isShowGroundRegion == true)
+                    {
+
+                    }
+                    if (isShowMaxCourageRange == true)
+                    {
+
+                    }
+                    if (isShowCourageRange == true)
+                    {
+
+                    }
 
                 } else
                 {
