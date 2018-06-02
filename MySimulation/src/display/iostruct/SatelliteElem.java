@@ -20,17 +20,16 @@ import java.util.Arrays;
  *
  * @author ZZL
  */
-public class PassDisplay
+public class SatelliteElem
 {
 
     public String satelliteName;
-    public Geometry ground;
-    
+    //public Geometry ground;
     public Time startTime;
     public Time endTime;
     public Position[] satellitePosArray;
     
-    public SensorDisplay[] sensorArray;
+    public ArrayList<ShotElem> shotElemList;
     
     public void DisplayOrbit(RenderableLayer layer,Time currentTime)
     {
@@ -45,7 +44,7 @@ public class PassDisplay
 
         ArrayList<Position> pathPositions=new ArrayList<Position>();
         int index=0;
-        for(Time temp=startTime.clone();temp.beforeOrEqual(currentTime)&&temp.beforeOrEqual(endTime);temp.addSeconds(1))
+        for(Time tempTime=startTime.clone();tempTime.beforeOrEqual(currentTime)&&tempTime.beforeOrEqual(endTime);tempTime.addSeconds(1))
         {
             pathPositions.add(satellitePosArray[index]);
             index++;

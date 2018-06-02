@@ -14,7 +14,7 @@ import display.iostruct.*;
  *
  * @author ZZL
  */
-public class DisplayControl
+public class DisplayController
 {
     
 
@@ -24,11 +24,11 @@ public class DisplayControl
     public boolean isShowMaxCourageRange = false;
     public boolean isShowCourageRange = false;
     
-    public PassDisplay[] passDisplayArray;
+    public SatelliteElem[] satelliteElemArray;
     
     private RenderableLayer displayLayer;
 
-    public DisplayControl(RenderableLayer layer)
+    public DisplayController(RenderableLayer layer)
     {
         displayLayer = layer;
     }
@@ -38,13 +38,13 @@ public class DisplayControl
     public Time currentTime;
     void display()
     {
-        if (passDisplayArray != null && passDisplayArray.length > 0)
+        if (satelliteElemArray != null && satelliteElemArray.length > 0)
         {
-            for (PassDisplay passDisplay : passDisplayArray)
+            for (SatelliteElem satelliteElem : satelliteElemArray)
             {
                 //遍历所有的过境场景
-                Time startTime = passDisplay.startTime;
-                Time endTime = passDisplay.endTime;
+                Time startTime = satelliteElem.startTime;
+                Time endTime = satelliteElem.endTime;
 
                 if (currentTime.before(startTime))
                 {
@@ -59,7 +59,7 @@ public class DisplayControl
                     //当前时间currentTime在passDisplay的起止时间之间：显示轨道，当前传感器三角，当前覆盖区域，最大覆盖区域
                     if (isShowSatelliteOrbit == true)
                     {
-                        passDisplay.DisplayOrbit(displayLayer, currentTime);
+                        satelliteElem.DisplayOrbit(displayLayer, currentTime);
                     }
                     if (isShowSensor == true)
                     {

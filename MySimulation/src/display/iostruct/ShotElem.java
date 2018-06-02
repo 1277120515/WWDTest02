@@ -6,14 +6,17 @@
 
 package display.iostruct;
 
+import coverage.util.Time;
 import gov.nasa.worldwind.geom.Position;
 
 /**
  *
  * @author ZZL
  */
-public class SensorDisplay
+public class ShotElem
 {
+    public Time startTime;
+    public Time endTime;
     public Position[] leftMaxPosArray;
     public Position[] rightMaxPosArray;
     public Position[] leftPosArray;

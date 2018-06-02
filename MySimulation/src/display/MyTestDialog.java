@@ -18,7 +18,7 @@ import javax.swing.JDialog;
 import display.iostruct.*;
 import coverage.util.Time;
 import gov.nasa.worldwind.geom.Position;
-import java.util.HashMap;
+import java.util.*;
 
 
 
@@ -32,7 +32,7 @@ public class MyTestDialog extends JDialog
     WorldWindow wwd;
     RenderableLayer displayLayer;
 
-    DisplayControl displayControl;
+    DisplayController displayControl;
     public MyTestDialog(Controller c, Frame owner)
     {
         super(owner);
@@ -44,30 +44,35 @@ public class MyTestDialog extends JDialog
 
 
         calculateData();
-        
+
         this.getDisplayControl();
-        
-        displayControl.currentTime=new Time("2014-08-01 00:01:00.000");
-        
-displayControl.display();
+
+        displayControl.currentTime = new Time("2014-08-01 00:30:30.000");
+
+        displayControl.display();
 
 
     }
 
 
 
-    String startTimeStr = "2014-08-01 00:00:00.000";
-    String endTimeStr = "2014-08-01 00:05:00.000";
+    String satelliteStartTimeStr = "2014-08-01 00:00:00.000";
+    String satelliteEndTimeStr = "2014-08-01 01:00:00.000";
     String tle = "1 26619U 00075A   16293.73279326 -.00000071  00000-0 -49450-5 0  9993;2 26619  97.8636 328.0037 0010174 143.8408 216.3455 14.64311646848348";
+    
+    String shotStartTimeStr = "2014-08-01 00:30:00.000";
+    String shotEndTimeStr = "2014-08-01 00:31:00.000";
+    
     double maxSwingAngle = 20;
     double swingAngle = 0;
     double fov = 5;
 
+
     Position[] satellitePosArray;
-    Position[] leftPosArray;
-    Position[] rightPosArray;
-    Position[] leftMaxPosArray;
-    Position[] rightMaxPosArray;
+    ArrayList<Position> leftPosList;
+    ArrayList<Position> rightPosList;
+    ArrayList<Position> leftMaxPosList;
+    ArrayList<Position> rightMaxPosList;
 
     private void calculateData()
     {
@@ -76,17 +81,28 @@ displayControl.display();
         SatelliteInput sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
         sli.satElement = tle;
 
-        PositionVelocityOutput[] pvo = OneDayCoverage.calPosition(sli, new Time(startTimeStr), new Time(endTimeStr), 1);
+        PositionVelocityOutput[] pvo = OneDayCoverage.calPosition(sli, new Time(satelliteStartTimeStr), new Time(satelliteEndTimeStr), 1);
 
         satellitePosArray = new Position[pvo.length];
-        leftPosArray = new Position[pvo.length];
-        rightPosArray = new Position[pvo.length];
-        leftMaxPosArray = new Position[pvo.length];
-        rightMaxPosArray = new Position[pvo.length];
+        leftPosList = new ArrayList<Position>();
+        rightPosList = new ArrayList<Position>();
+        leftMaxPosList = new ArrayList<Position>();
+        rightMaxPosList = new ArrayList<Position>();
 
         for (int i = 0; i < pvo.length; i++)
         {
-            double[] r1;
+            satellitePosArray[i] = Position.fromDegrees(pvo[i].Lat, pvo[i].Lon, pvo[i].Alt);
+        }
+        
+        Time shotStartTime=new Time(shotStartTimeStr);    
+        Time shotEndTime=new Time(shotEndTimeStr);
+
+
+        for(PositionVelocityOutput pvo1:pvo)
+        {
+            if(pvo1.Time.afterOrEqual(shotStartTime)&&pvo1.Time.beforeOrEqual(shotEndTime))
+            {
+                double[] r1;
             double[] v1;
             double[] LonLatLeft;
             double[] LonLatRight;
@@ -94,27 +110,26 @@ displayControl.display();
 
             r1 = new double[]
             {
-                pvo[i].x_J2000C, pvo[i].y_J2000C, pvo[i].z_J2000C
+                pvo1.x_J2000C, pvo1.y_J2000C, pvo1.z_J2000C
             };
             v1 = new double[]
             {
-                pvo[i].vx_J2000C, pvo[i].vy_J2000C, pvo[i].vz_J2000C
+                pvo1.vx_J2000C, pvo1.vy_J2000C, pvo1.vz_J2000C
             };
             LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
             LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
 
-            satellitePosArray[i] = Position.fromDegrees(pvo[i].Lat, pvo[i].Lon, pvo[i].Alt);
-            leftPosArray[i] = Position.fromDegrees(LonLatLeft[1], LonLatLeft[0], 0);
-            rightPosArray[i] = Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0);
+            leftPosList.add( Position.fromDegrees(LonLatLeft[1], LonLatLeft[0], 0));
+            rightPosList.add(Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0));
 
             LonLatLeft = CoorTrans.getScanLatLon(r1, v1, maxSwingAngle + fov / 2, 0);     //左侧 最大扫描边界与地球交点经纬度
             LonLatRight = CoorTrans.getScanLatLon(r1, v1, -maxSwingAngle - fov / 2, 0);   //右侧 最大扫描边界与地球交点经纬度
 
-            leftMaxPosArray[i] = Position.fromDegrees(LonLatLeft[1], LonLatLeft[0], 0);
-            rightMaxPosArray[i] = Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0);
-
-
+            leftMaxPosList.add( Position.fromDegrees(LonLatLeft[1], LonLatLeft[0], 0));
+            rightMaxPosList.add(  Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0));
+            }
         }
+        
 
 
 
@@ -122,31 +137,33 @@ displayControl.display();
 
     private void getDisplayControl()
     {
-        PassDisplay passDisplay;
-        SensorDisplay sensorDisplay;
+        SatelliteElem satelliteElem;
+        ShotElem shotElem;
 
-        passDisplay = new PassDisplay();
+        satelliteElem = new SatelliteElem();
 
-        passDisplay.startTime = new Time(startTimeStr);
-        passDisplay.endTime = new Time(endTimeStr);
-        passDisplay.ground = null;
-        passDisplay.satelliteName = "Satellite 01";
-        passDisplay.satellitePosArray = satellitePosArray;
+        satelliteElem.startTime = new Time(satelliteStartTimeStr);
+        satelliteElem.endTime = new Time(satelliteEndTimeStr);
+        //passDisplay.ground = null;
+        satelliteElem.satelliteName = "Satellite 01";
+        satelliteElem.satellitePosArray = satellitePosArray;
 
-        sensorDisplay = new SensorDisplay();
-        sensorDisplay.leftMaxPosArray = leftMaxPosArray;
-        sensorDisplay.leftPosArray = leftPosArray;
-        sensorDisplay.rightMaxPosArray = rightMaxPosArray;
-        sensorDisplay.rightPosArray = rightPosArray;
+        shotElem = new ShotElem();
+        shotElem.startTime = new Time(shotStartTimeStr);
+        shotElem.endTime = new Time(shotEndTimeStr);
+        shotElem.leftMaxPosArray = (Position[]) leftMaxPosList.toArray(new Position[leftMaxPosList.size()]);
+        shotElem.leftPosArray = (Position[]) leftPosList.toArray(new Position[leftPosList.size()]);
+        shotElem.rightMaxPosArray = (Position[]) rightMaxPosList.toArray(new Position[rightMaxPosList.size()]);
+        shotElem.rightPosArray = (Position[]) rightPosList.toArray(new Position[rightPosList.size()]);
 
-        passDisplay.sensorArray = new SensorDisplay[1];
-        passDisplay.sensorArray[0] = sensorDisplay;
-        
-        
-        displayControl = new DisplayControl(displayLayer);
+        satelliteElem.shotElemList = new ArrayList<ShotElem>();
+        satelliteElem.shotElemList.add(shotElem);
+
+
+        displayControl = new DisplayController(displayLayer);
         displayControl.isShowSatelliteOrbit = true;
-        displayControl.passDisplayArray = new PassDisplay[1];
-        displayControl.passDisplayArray[0]=passDisplay;
-        
+        displayControl.satelliteElemArray = new SatelliteElem[1];
+        displayControl.satelliteElemArray[0] = satelliteElem;
+
     }
 }
