@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package display.iostruct;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -28,10 +27,10 @@ public class SatelliteElem
     public Time startTime;
     public Time endTime;
     public Position[] satellitePosArray;
-    
+
     public ArrayList<ShotElem> shotElemList;
-    
-    public void DisplayOrbit(RenderableLayer layer,Time currentTime)
+
+    public void ShowOrbit(RenderableLayer layer, Time currentTime)
     {
         ShapeAttributes attrs = new BasicShapeAttributes();
         attrs.setDrawInterior(false);
@@ -42,9 +41,9 @@ public class SatelliteElem
         attrs.setOutlineWidth(DisplayConfig.orbitWidth);
         attrs.setOutlineOpacity(1);
 
-        ArrayList<Position> pathPositions=new ArrayList<Position>();
-        int index=0;
-        for(Time tempTime=startTime.clone();tempTime.beforeOrEqual(currentTime)&&tempTime.beforeOrEqual(endTime);tempTime.addSeconds(1))
+        ArrayList<Position> pathPositions = new ArrayList<Position>();
+        int index = 0;
+        for (Time tempTime = startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(endTime); tempTime.addSeconds(1))
         {
             pathPositions.add(satellitePosArray[index]);
             index++;
@@ -54,7 +53,7 @@ public class SatelliteElem
         path.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
         path.setHighlightAttributes(attrs);
         path.setAttributes(attrs);
-        
+
         layer.addRenderable(path);
     }
 

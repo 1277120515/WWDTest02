@@ -48,7 +48,6 @@ public class MyTestDialog extends JDialog
         this.getDisplayControl();
 
         displayControl.currentTime = new Time("2014-08-01 00:30:30.000");
-
         displayControl.display();
 
 

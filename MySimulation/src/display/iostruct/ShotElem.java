@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package display.iostruct;
 
 import coverage.util.Time;
 import gov.nasa.worldwind.geom.Position;
+import gov.nasa.worldwind.layers.RenderableLayer;
 
 /**
  *
@@ -21,4 +21,19 @@ public class ShotElem
     public Position[] rightMaxPosArray;
     public Position[] leftPosArray;
     public Position[] rightPosArray;
+
+    public void ShowSensor(RenderableLayer layer, Time currentTime)
+    {
+
+    }
+
+    public void ShowCourageRange(RenderableLayer layer, Time currentTime)
+    {
+
+    }
+
+    public void ShowMaxCourageRange(RenderableLayer layer, Time currentTime)
+    {
+
+    }
 }
