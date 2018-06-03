@@ -36,12 +36,12 @@ public class DisplayController
     {
         displayLayer = layer;
         
-        currentTime=startTime.clone();
     }
 
     public void Restart()
     {
-        currentTime = startTime.clone();
+        currentTime =// startTime.clone();
+        new Time("2014-08-01 00:15:06.000");
         display();
     }
 
@@ -70,6 +70,7 @@ public class DisplayController
     private Time currentTime;
     private void display()
     {
+        displayLayer.removeAllRenderables();
         //œ‘ æŒ¿–«πÏµ¿
         if (isShowSatelliteOrbit == true)
         {

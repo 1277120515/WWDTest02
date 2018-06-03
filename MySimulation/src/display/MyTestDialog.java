@@ -18,7 +18,10 @@ import javax.swing.JDialog;
 import display.iostruct.*;
 import coverage.util.Time;
 import gov.nasa.worldwind.geom.Position;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.*;
+import javax.swing.JButton;
 
 
 
@@ -46,9 +49,37 @@ public class MyTestDialog extends JDialog
         calculateData();
 
         getDisplayControl();
+        
+        displayControl.Restart();
 
         //displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
         //displayControl.display();
+        
+        JButton btn = new JButton("---");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayControl.NextFrame();
+                wwd.redraw();
+            }
+        });
+        
+        this.add(btn);
+        
+        btn = new JButton("2");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayControl.NextFrame();
+                wwd.redraw();
+            }
+        });
+        
+        this.add(btn);
 
 
     }
