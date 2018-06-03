@@ -26,17 +26,43 @@ public class DisplayController
 
     public SatelliteElem[] satelliteElemArray;
     public Geometry ground;
+    
+    public Time startTime;
+    public Time endTime;
 
     private RenderableLayer displayLayer;
 
     public DisplayController(RenderableLayer layer)
     {
         displayLayer = layer;
+        
+        currentTime=startTime.clone();
     }
-    
+
     public void Restart()
     {
-    
+        currentTime = startTime.clone();
+        display();
+    }
+
+    public void NextFrame()
+    {
+        currentTime.addSeconds(1);
+        if (currentTime.after(endTime))
+        {
+            currentTime.addSeconds(-1);
+        }
+        display();
+    }
+
+    public void LastFrame()
+    {
+        currentTime.addSeconds(-1);
+        if (currentTime.before(startTime))
+        {
+            currentTime.addSeconds(1);
+        }
+        display();
     }
 
 

@@ -45,10 +45,10 @@ public class MyTestDialog extends JDialog
 
         calculateData();
 
-        this.getDisplayControl();
+        getDisplayControl();
 
-        displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
-        displayControl.display();
+        //displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
+        //displayControl.display();
 
 
     }
@@ -162,9 +162,11 @@ public class MyTestDialog extends JDialog
         displayControl = new DisplayController(displayLayer);
         displayControl.isShowSatelliteOrbit = true;
         displayControl.isShowSensor=true;
-        displayControl.isShowCourageRange=true;
+        displayControl.isShowCourageRange = true;
         displayControl.satelliteElemArray = new SatelliteElem[1];
         displayControl.satelliteElemArray[0] = satelliteElem;
+        displayControl.startTime = new Time(satelliteStartTimeStr);
+        displayControl.endTime = new Time(satelliteEndTimeStr);
 
     }
 }
