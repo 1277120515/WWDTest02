@@ -59,39 +59,18 @@ public class DisplayController
         /////////////////////////////////////////////////////////
 
 
+        //显示传感器三角
         if (isShowSensor == true)
         {
             if (satelliteElemArray != null && satelliteElemArray.length > 0)
             {
                 for (SatelliteElem satelliteElem : satelliteElemArray)
                 {
-                    satelliteElem.ShowSensor(displayLayer, currentTime);
-                }
-            }
-            /*
-             if (currentTime.before(startTime))
-             {
-             //当前时间currentTime未达到passDisplay的开始时间：仅显示轨道
-             if (isShowSatelliteOrbit == true)
-                {
+                    satelliteElem.ShowMaxSensorTriangle(displayLayer, currentTime);
+                    satelliteElem.ShowSensorTriangle(displayLayer, currentTime);
 
                 }
-
-            } else if (startTime.before(currentTime) && currentTime.before(endTime))
-            {
-                //当前时间currentTime在passDisplay的起止时间之间：显示轨道，当前传感器三角，当前覆盖区域，最大覆盖区域
-
-                
-
-
-
-            } else
-            {
-                //当前时间currentTime超过passDisplay的结束时间：显示轨道，已经覆盖区域
-
             }
-                    */
-
         }
 
         if (isShowMaxCourageRange == true)

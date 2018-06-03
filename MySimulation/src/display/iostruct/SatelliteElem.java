@@ -58,7 +58,17 @@ public class SatelliteElem
         layer.addRenderable(path);
     }
 
-    public void ShowSensor(RenderableLayer layer, Time currentTime)
+    public void ShowMaxSensorTriangle(RenderableLayer layer, Time currentTime)
+    {
+        ShowTriangle(layer, currentTime, true);
+    }
+
+    public void ShowSensorTriangle(RenderableLayer layer, Time currentTime)
+    {
+        ShowTriangle(layer, currentTime, false);
+    }
+
+    private void ShowTriangle(RenderableLayer layer, Time currentTime, boolean isMax)
     {
         //显示传感器三角
         if (currentTime.afterOrEqual(startTime) && currentTime.beforeOrEqual(endTime))
@@ -93,20 +103,37 @@ public class SatelliteElem
                     Polygon pg = new Polygon();
                     pg.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
 
+                    
                     ShapeAttributes attrs = new BasicShapeAttributes();
                     attrs.setDrawInterior(true);
-                    attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
-                    attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
                     attrs.setDrawOutline(true);
-                    attrs.setOutlineMaterial(new Material(DisplayConfig.sensorOutlineColor));
-                    attrs.setOutlineOpacity(DisplayConfig.sensorOutlineOpacity);
+                    if (isMax == false)
+                    {
+                        attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
+                        attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
+                        attrs.setOutlineMaterial(new Material(DisplayConfig.sensorOutlineColor));
+                        attrs.setOutlineOpacity(DisplayConfig.sensorOutlineOpacity);
+                    } else
+                    {
+                        attrs.setInteriorMaterial(new Material(DisplayConfig.sensorMaxInnerColor));
+                        attrs.setInteriorOpacity(DisplayConfig.sensorMaxInnerOpacity);
+                        attrs.setOutlineMaterial(new Material(DisplayConfig.sensorMaxOutlineColor));
+                        attrs.setOutlineOpacity(DisplayConfig.sensorMaxOutlineOpacity);
+                    }
                     pg.setAttributes(attrs);
                     pg.setHighlightAttributes(attrs);
 
                     ArrayList<Position> posList = new ArrayList<Position>();
                     posList.add(satellitePosArray[satelliteIndex]);
-                    posList.add(shotElem.leftPosArray[shotIndex]);
-                    posList.add(shotElem.rightPosArray[shotIndex]);
+                    if (isMax == false)
+                    {
+                        posList.add(shotElem.leftPosArray[shotIndex]);
+                        posList.add(shotElem.rightPosArray[shotIndex]);
+                    } else
+                    {
+                        posList.add(shotElem.leftMaxPosArray[shotIndex]);
+                        posList.add(shotElem.rightMaxPosArray[shotIndex]);
+                    }
                     pg.setOuterBoundary(posList);
                     layer.addRenderable(pg);
 
@@ -114,9 +141,17 @@ public class SatelliteElem
                     SurfacePolyline sp = new SurfacePolyline();
                     ShapeAttributes attrs2 = new BasicShapeAttributes();
                     attrs2.setDrawOutline(true);
-                    attrs2.setOutlineMaterial(new Material(DisplayConfig.scanLineColor));
-                    attrs2.setOutlineWidth(DisplayConfig.scanLineWidth);
-                    attrs2.setOutlineOpacity(1);
+                    if (isMax == false)
+                    {
+                        attrs2.setOutlineMaterial(new Material(DisplayConfig.scanLineColor));
+                        attrs2.setOutlineWidth(DisplayConfig.scanLineWidth);
+                        attrs2.setOutlineOpacity(DisplayConfig.scanLineOpacity);
+                    } else
+                    {
+                        attrs2.setOutlineMaterial(new Material(DisplayConfig.scanMaxLineColor));
+                        attrs2.setOutlineWidth(DisplayConfig.scanMaxLineWidth);
+                        attrs2.setOutlineOpacity(DisplayConfig.scanMaxLineOpacity);
+                    }
                     sp.setAttributes(attrs2);
                     sp.setHighlightAttributes(attrs2);
 
