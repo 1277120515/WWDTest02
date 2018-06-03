@@ -6,6 +6,7 @@
 package display.iostruct;
 
 import com.vividsolutions.jts.geom.Geometry;
+import coverage.util.CoorTrans;
 import coverage.util.Time;
 import display.DisplayConfig;
 import gov.nasa.worldwind.WorldWind;
@@ -15,6 +16,7 @@ import gov.nasa.worldwind.render.*;
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 /**
  *
@@ -167,12 +169,62 @@ public class SatelliteElem
 
     public void ShowCourageRange(RenderableLayer layer, Time currentTime)
     {
-
+        ShowRange(layer, currentTime, false);
     }
 
     public void ShowMaxCourageRange(RenderableLayer layer, Time currentTime)
     {
 
     }
+    
+    private void ShowRange(RenderableLayer layer, Time currentTime,boolean isMax)
+    {
+        for (ShotElem shotElem : shotElemList)
+        {
+            if (currentTime.afterOrEqual(shotElem.startTime) && currentTime.beforeOrEqual(shotElem.endTime))
+            {
+
+                int shotIndex = 0;
+                for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
+                {
+                    if (tempTime.after(currentTime))
+                    {
+                        break;
+                    }
+                    shotIndex++;
+                }
+                shotIndex--;
+
+                ArrayList<Position> stripeOutlineList = new ArrayList<Position>();
+                for (int i = 0; i <= shotIndex; i++)
+                {
+                    stripeOutlineList.add(shotElem.leftPosArray[i]);
+                }
+                for (int i = shotIndex; i >= 0; i--)
+                {
+                    stripeOutlineList.add(shotElem.rightPosArray[i]);
+                }
+                SurfacePolygon stripeOutline = new SurfacePolygon();
+
+                ShapeAttributes attrs = new BasicShapeAttributes();
+                attrs.setDrawInterior(true);
+                attrs.setInteriorMaterial(new Material(DisplayConfig.stripeInnerColor));
+                attrs.setInteriorOpacity(DisplayConfig.stripeInnerOpacity);
+                attrs.setDrawOutline(true);
+                attrs.setOutlineMaterial(new Material(DisplayConfig.stripeOutlineColor));
+                attrs.setOutlineWidth(DisplayConfig.stripeOutlineWidth);
+                attrs.setOutlineOpacity(DisplayConfig.stripeOutlineOpacity);
+                stripeOutline.setAttributes(attrs);
+                stripeOutline.setHighlightAttributes(attrs);
+
+                stripeOutline.setLocations(stripeOutlineList);
+
+                layer.addRenderable(stripeOutline);
+
+            }
+
+        }
+    }
 
 }
+

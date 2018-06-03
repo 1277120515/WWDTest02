@@ -162,6 +162,7 @@ public class MyTestDialog extends JDialog
         displayControl = new DisplayController(displayLayer);
         displayControl.isShowSatelliteOrbit = true;
         displayControl.isShowSensor=true;
+        displayControl.isShowCourageRange=true;
         displayControl.satelliteElemArray = new SatelliteElem[1];
         displayControl.satelliteElemArray[0] = satelliteElem;
 

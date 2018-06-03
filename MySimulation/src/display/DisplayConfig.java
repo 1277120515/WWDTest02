@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package display;
 
 import java.awt.Color;
@@ -24,15 +23,19 @@ public class DisplayConfig
     public static Color scanLineColor = Color.BLUE;
     public static double scanLineWidth = 4;
     public static double scanLineOpacity = 1;
-    
-    public static Color sensorMaxInnerColor = new Color(100,255,0);
+
+    public static Color sensorMaxInnerColor = new Color(100, 255, 0);
     public static double sensorMaxInnerOpacity = 0.2;
     public static Color sensorMaxOutlineColor = Color.green;
     public static double sensorMaxOutlineOpacity = 0.5;
-    public static Color scanMaxLineColor = new Color(0,0,100);
+    public static Color scanMaxLineColor = new Color(0, 0, 100);
     public static double scanMaxLineWidth = 2;
-     public static double scanMaxLineOpacity = 0.5;
-    
-    
+    public static double scanMaxLineOpacity = 0.5;
+
+    public static Color stripeInnerColor = Color.blue;
+    public static double stripeInnerOpacity = 0.4;
+    public static Color stripeOutlineColor = Color.orange;
+    public static double stripeOutlineOpacity = 1;
+    public static double stripeOutlineWidth = 2;
 
 }

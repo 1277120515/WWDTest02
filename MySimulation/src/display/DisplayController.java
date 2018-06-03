@@ -33,12 +33,16 @@ public class DisplayController
     {
         displayLayer = layer;
     }
+    
+    public void Restart()
+    {
+    
+    }
 
 
 
-    public Time currentTime;
-
-    void display()
+    private Time currentTime;
+    private void display()
     {
         //ÏÔÊ¾ÎÀÐÇ¹ìµÀ
         if (isShowSatelliteOrbit == true)
@@ -75,14 +79,20 @@ public class DisplayController
 
         if (isShowMaxCourageRange == true)
         {
-
+            
         }
         if (isShowCourageRange == true)
         {
-
+            if (satelliteElemArray != null && satelliteElemArray.length > 0)
+            {
+                for (SatelliteElem satelliteElem : satelliteElemArray)
+                {
+                    satelliteElem.ShowCourageRange(displayLayer, currentTime);
+                    
+                }
+            }
         }
-
-
+        
 
     }
 }
