@@ -18,6 +18,11 @@ public class DisplayConfig
     public static double orbitWidth = 2;
 
     public static Color sensorInnerColor = Color.green;
-    public static double sensorInnerOpacity = 0.5;
+    public static double sensorInnerOpacity = 0.4;
+    public static Color sensorOutlineColor = Color.green;
+    public static double sensorOutlineOpacity = 1;
+    
+    public static Color scanLineColor = Color.BLUE;
+    public static double scanLineWidth = 4;
 
 }

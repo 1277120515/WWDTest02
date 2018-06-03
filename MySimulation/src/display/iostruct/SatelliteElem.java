@@ -12,6 +12,7 @@ import gov.nasa.worldwind.WorldWind;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -96,7 +97,9 @@ public class SatelliteElem
                     attrs.setDrawInterior(true);
                     attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
                     attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
-                    attrs.setDrawOutline(false);
+                    attrs.setDrawOutline(true);
+                    attrs.setOutlineMaterial(new Material(DisplayConfig.sensorOutlineColor));
+                    attrs.setOutlineOpacity(DisplayConfig.sensorOutlineOpacity);
                     pg.setAttributes(attrs);
                     pg.setHighlightAttributes(attrs);
 
@@ -106,6 +109,20 @@ public class SatelliteElem
                     posList.add(shotElem.rightPosArray[shotIndex]);
                     pg.setOuterBoundary(posList);
                     layer.addRenderable(pg);
+
+                    //œ‘ æ…®√Ëœﬂ
+                    SurfacePolyline sp = new SurfacePolyline();
+                    ShapeAttributes attrs2 = new BasicShapeAttributes();
+                    attrs2.setDrawOutline(true);
+                    attrs2.setOutlineMaterial(new Material(DisplayConfig.scanLineColor));
+                    attrs2.setOutlineWidth(DisplayConfig.scanLineWidth);
+                    attrs2.setOutlineOpacity(1);
+                    sp.setAttributes(attrs2);
+                    sp.setHighlightAttributes(attrs2);
+
+                    posList.remove(0);
+                    sp.setLocations(posList);
+                    layer.addRenderable(sp);
                 }
             }
 
