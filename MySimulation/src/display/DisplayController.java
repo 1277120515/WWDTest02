@@ -47,12 +47,7 @@ public class DisplayController
             {
                 for (SatelliteElem satelliteElem : satelliteElemArray)
                 {
-                    //遍历所有的过境场景
-                    Time startTime = satelliteElem.startTime;
-                    Time endTime = satelliteElem.endTime;
-
                     satelliteElem.ShowOrbit(displayLayer, currentTime);
-
                 }
             }
         }
@@ -63,16 +58,21 @@ public class DisplayController
         }
         /////////////////////////////////////////////////////////
 
-        Time startTime = new Time("");
-        Time endTime = new Time("");
-
 
         if (isShowSensor == true)
         {
-            if (currentTime.before(startTime))
+            if (satelliteElemArray != null && satelliteElemArray.length > 0)
             {
-                //当前时间currentTime未达到passDisplay的开始时间：仅显示轨道
-                if (isShowSatelliteOrbit == true)
+                for (SatelliteElem satelliteElem : satelliteElemArray)
+                {
+                    satelliteElem.ShowSensor(displayLayer, currentTime);
+                }
+            }
+            /*
+             if (currentTime.before(startTime))
+             {
+             //当前时间currentTime未达到passDisplay的开始时间：仅显示轨道
+             if (isShowSatelliteOrbit == true)
                 {
 
                 }
@@ -90,6 +90,7 @@ public class DisplayController
                 //当前时间currentTime超过passDisplay的结束时间：显示轨道，已经覆盖区域
 
             }
+                    */
 
         }
 

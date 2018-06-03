@@ -14,12 +14,10 @@ import java.awt.Color;
  */
 public class DisplayConfig
 {
-    public static Color orbitColor=Color.red;
-    public static double orbitWidth=2;
-    
-        public static Color sensorInnerColor=Color.red;
-                public static double sensorInnerOpacity=0.1;
+    public static Color orbitColor = Color.red;
+    public static double orbitWidth = 2;
 
+    public static Color sensorInnerColor = Color.green;
+    public static double sensorInnerOpacity = 0.5;
 
-    
 }

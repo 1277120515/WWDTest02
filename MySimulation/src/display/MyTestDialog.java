@@ -47,7 +47,7 @@ public class MyTestDialog extends JDialog
 
         this.getDisplayControl();
 
-        displayControl.currentTime = new Time("2014-08-01 00:30:30.000");
+        displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
         displayControl.display();
 
 
@@ -59,12 +59,12 @@ public class MyTestDialog extends JDialog
     String satelliteEndTimeStr = "2014-08-01 01:00:00.000";
     String tle = "1 26619U 00075A   16293.73279326 -.00000071  00000-0 -49450-5 0  9993;2 26619  97.8636 328.0037 0010174 143.8408 216.3455 14.64311646848348";
     
-    String shotStartTimeStr = "2014-08-01 00:30:00.000";
-    String shotEndTimeStr = "2014-08-01 00:31:00.000";
+    String shotStartTimeStr = "2014-08-01 00:15:00.000";
+    String shotEndTimeStr = "2014-08-01 00:16:00.000";
     
     double maxSwingAngle = 20;
     double swingAngle = 0;
-    double fov = 5;
+    double fov = 20;
 
 
     Position[] satellitePosArray;
@@ -161,6 +161,7 @@ public class MyTestDialog extends JDialog
 
         displayControl = new DisplayController(displayLayer);
         displayControl.isShowSatelliteOrbit = true;
+        displayControl.isShowSensor=true;
         displayControl.satelliteElemArray = new SatelliteElem[1];
         displayControl.satelliteElemArray[0] = satelliteElem;
 

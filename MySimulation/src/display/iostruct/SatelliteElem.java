@@ -57,15 +57,9 @@ public class SatelliteElem
         layer.addRenderable(path);
     }
 
-
     public void ShowSensor(RenderableLayer layer, Time currentTime)
     {
-//显示传感器三角
-        
-        
-        
-        
-        
+        //显示传感器三角
         if (currentTime.afterOrEqual(startTime) && currentTime.beforeOrEqual(endTime))
         {
             int satelliteIndex = 0;
@@ -82,48 +76,41 @@ public class SatelliteElem
 
             for (ShotElem shotElem : shotElemList)
             {
-                int shotIndex = 0;
-                for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
+                if (currentTime.afterOrEqual(shotElem.startTime) && currentTime.beforeOrEqual(shotElem.endTime))
                 {
-                    if (tempTime.after(currentTime))
+                    int shotIndex = 0;
+                    for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
                     {
-                        break;
+                        if (tempTime.after(currentTime))
+                        {
+                            break;
+                        }
+                        shotIndex++;
                     }
-                    shotIndex++;
+                    shotIndex--;
+
+                    Polygon pg = new Polygon();
+                    pg.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
+
+                    ShapeAttributes attrs = new BasicShapeAttributes();
+                    attrs.setDrawInterior(true);
+                    attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
+                    attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
+                    attrs.setDrawOutline(false);
+                    pg.setAttributes(attrs);
+                    pg.setHighlightAttributes(attrs);
+
+                    ArrayList<Position> posList = new ArrayList<Position>();
+                    posList.add(satellitePosArray[satelliteIndex]);
+                    posList.add(shotElem.leftPosArray[shotIndex]);
+                    posList.add(shotElem.rightPosArray[shotIndex]);
+                    pg.setOuterBoundary(posList);
+                    layer.addRenderable(pg);
                 }
-                shotIndex--;
-
-
-                Polygon pg = new Polygon();
-                pg.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
-
-                ShapeAttributes attrs = new BasicShapeAttributes();
-                attrs.setDrawInterior(true);
-                attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
-                attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
-                attrs.setDrawOutline(false);
-                pg.setAttributes(attrs);
-                pg.setHighlightAttributes(attrs);
-
-                ArrayList<Position> posList = new ArrayList<Position>();
-                posList.add(satellitePosArray[satelliteIndex]);
-                posList.add(shotElem[shotIndex]);
-                posList.add(shotElem[shotIndex]);
-                pg.setOuterBoundary(posList);
-                layer.addRenderable(pg);
             }
-
 
         }
 
-
-
-
-        
-        
-        
-        
-        
     }
 
     public void ShowCourageRange(RenderableLayer layer, Time currentTime)
