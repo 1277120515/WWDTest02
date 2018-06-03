@@ -58,5 +58,82 @@ public class SatelliteElem
     }
 
 
+    public void ShowSensor(RenderableLayer layer, Time currentTime)
+    {
+//显示传感器三角
+        
+        
+        
+        
+        
+        if (currentTime.afterOrEqual(startTime) && currentTime.beforeOrEqual(endTime))
+        {
+            int satelliteIndex = 0;
+
+            for (Time tempTime = startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(endTime); tempTime.addSeconds(1))
+            {
+                if (tempTime.after(currentTime))
+                {
+                    break;
+                }
+                satelliteIndex++;
+            }
+            satelliteIndex--;
+
+            for (ShotElem shotElem : shotElemList)
+            {
+                int shotIndex = 0;
+                for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
+                {
+                    if (tempTime.after(currentTime))
+                    {
+                        break;
+                    }
+                    shotIndex++;
+                }
+                shotIndex--;
+
+
+                Polygon pg = new Polygon();
+                pg.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
+
+                ShapeAttributes attrs = new BasicShapeAttributes();
+                attrs.setDrawInterior(true);
+                attrs.setInteriorMaterial(new Material(DisplayConfig.sensorInnerColor));
+                attrs.setInteriorOpacity(DisplayConfig.sensorInnerOpacity);
+                attrs.setDrawOutline(false);
+                pg.setAttributes(attrs);
+                pg.setHighlightAttributes(attrs);
+
+                ArrayList<Position> posList = new ArrayList<Position>();
+                posList.add(satellitePosArray[satelliteIndex]);
+                posList.add(shotElem[shotIndex]);
+                posList.add(shotElem[shotIndex]);
+                pg.setOuterBoundary(posList);
+                layer.addRenderable(pg);
+            }
+
+
+        }
+
+
+
+
+        
+        
+        
+        
+        
+    }
+
+    public void ShowCourageRange(RenderableLayer layer, Time currentTime)
+    {
+
+    }
+
+    public void ShowMaxCourageRange(RenderableLayer layer, Time currentTime)
+    {
+
+    }
 
 }

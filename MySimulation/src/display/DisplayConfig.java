@@ -17,4 +17,9 @@ public class DisplayConfig
     public static Color orbitColor=Color.red;
     public static double orbitWidth=2;
     
+        public static Color sensorInnerColor=Color.red;
+                public static double sensorInnerOpacity=0.1;
+
+
+    
 }
