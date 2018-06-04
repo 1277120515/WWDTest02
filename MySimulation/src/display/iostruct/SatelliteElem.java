@@ -10,10 +10,12 @@ import coverage.util.CoorTrans;
 import coverage.util.Time;
 import display.DisplayConfig;
 import gov.nasa.worldwind.WorldWind;
+import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.*;
 import java.awt.Color;
+import java.awt.Insets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -32,6 +34,43 @@ public class SatelliteElem
     public Position[] satellitePosArray;
 
     public ArrayList<ShotElem> shotElemList;
+
+    public void ShowSatellite(RenderableLayer layer, Time currentTime)
+    {
+
+        if (currentTime.afterOrEqual(startTime) && currentTime.beforeOrEqual(endTime))
+        {
+            int satelliteIndex = 0;
+
+            for (Time tempTime = startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(endTime); tempTime.addSeconds(1))
+            {
+                if (tempTime.after(currentTime))
+                {
+                    break;
+                }
+                satelliteIndex++;
+            }
+            satelliteIndex--;
+
+            AnnotationAttributes attr = new AnnotationAttributes();
+            attr.setBackgroundColor(new Color(0, 0, 0, 0));
+            attr.setBorderColor(new Color(255, 255, 255, 128));
+
+            attr.setTextColor(Color.yellow);
+            attr.setBorderWidth(2);
+            attr.setCornerRadius(5);
+            attr.setInsets(new Insets(8, 8, 8, 8));
+            attr.setHighlighted(false);
+            attr.setLeaderGapWidth(10);
+
+            GlobeAnnotation satelliteNameAnnotation = new GlobeAnnotation(satelliteName, satellitePosArray[satelliteIndex], attr);
+            //satelliteNameAnnotation.setMinActiveAltitude(1000 * 1000);
+            //satelliteNameAnnotation.setMaxActiveAltitude(1500 * 1000);
+            layer.addRenderable(satelliteNameAnnotation);
+
+        }
+
+    }
 
     public void ShowOrbit(RenderableLayer layer, Time currentTime)
     {
@@ -105,7 +144,6 @@ public class SatelliteElem
                     Polygon pg = new Polygon();
                     pg.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
 
-                    
                     ShapeAttributes attrs = new BasicShapeAttributes();
                     attrs.setDrawInterior(true);
                     attrs.setDrawOutline(true);
@@ -176,8 +214,8 @@ public class SatelliteElem
     {
 
     }
-    
-    private void ShowRange(RenderableLayer layer, Time currentTime,boolean isMax)
+
+    private void ShowRange(RenderableLayer layer, Time currentTime, boolean isMax)
     {
         for (ShotElem shotElem : shotElemList)
         {
@@ -227,4 +265,3 @@ public class SatelliteElem
     }
 
 }
-

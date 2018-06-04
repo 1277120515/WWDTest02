@@ -17,16 +17,16 @@ import com.vividsolutions.jts.geom.Geometry;
 public class DisplayController
 {
 
-
     public boolean isShowSatelliteOrbit = false;
     public boolean isShowSensor = false;
     public boolean isShowGroundRegion = false;
     public boolean isShowMaxCourageRange = false;
     public boolean isShowCourageRange = false;
+    public boolean isShowSatellite = false;
 
     public SatelliteElem[] satelliteElemArray;
     public Geometry ground;
-    
+
     public Time startTime;
     public Time endTime;
 
@@ -35,13 +35,13 @@ public class DisplayController
     public DisplayController(RenderableLayer layer)
     {
         displayLayer = layer;
-        
+
     }
 
     public void Restart()
     {
         currentTime =// startTime.clone();
-        new Time("2014-08-01 00:15:06.000");
+                new Time("2014-08-01 00:15:06.000");
         display();
     }
 
@@ -65,21 +65,44 @@ public class DisplayController
         display();
     }
 
-
-
     private Time currentTime;
+
     private void display()
     {
         displayLayer.removeAllRenderables();
-        //显示卫星轨道
-        if (isShowSatelliteOrbit == true)
+
+        if (satelliteElemArray != null && satelliteElemArray.length > 0)
         {
-            if (satelliteElemArray != null && satelliteElemArray.length > 0)
+            for (SatelliteElem satelliteElem : satelliteElemArray)
             {
-                for (SatelliteElem satelliteElem : satelliteElemArray)
+
+                //遍历每一颗卫星
+                
+                //是否显示卫星轨迹
+                if (isShowSatelliteOrbit == true)
                 {
                     satelliteElem.ShowOrbit(displayLayer, currentTime);
                 }
+
+                //是否显示卫星和名称
+                if (isShowSatellite == true)
+                {
+                    satelliteElem.ShowSatellite(displayLayer, currentTime);
+                }
+
+                //是否显示传感器三角
+                if (isShowSensor == true)
+                {
+                    satelliteElem.ShowMaxSensorTriangle(displayLayer, currentTime);
+                    satelliteElem.ShowSensorTriangle(displayLayer, currentTime);
+                }
+
+                //是否显示条带
+                if (isShowCourageRange == true)
+                {
+                    satelliteElem.ShowCourageRange(displayLayer, currentTime);
+                }
+
             }
         }
 
@@ -89,37 +112,10 @@ public class DisplayController
         }
         /////////////////////////////////////////////////////////
 
-
-        //显示传感器三角
-        if (isShowSensor == true)
-        {
-            if (satelliteElemArray != null && satelliteElemArray.length > 0)
-            {
-                for (SatelliteElem satelliteElem : satelliteElemArray)
-                {
-                    satelliteElem.ShowMaxSensorTriangle(displayLayer, currentTime);
-                    satelliteElem.ShowSensorTriangle(displayLayer, currentTime);
-
-                }
-            }
-        }
-
         if (isShowMaxCourageRange == true)
         {
-            
+
         }
-        if (isShowCourageRange == true)
-        {
-            if (satelliteElemArray != null && satelliteElemArray.length > 0)
-            {
-                for (SatelliteElem satelliteElem : satelliteElemArray)
-                {
-                    satelliteElem.ShowCourageRange(displayLayer, currentTime);
-                    
-                }
-            }
-        }
-        
 
     }
 }
