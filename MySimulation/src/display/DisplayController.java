@@ -16,7 +16,6 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class DisplayController
 {
-
     public boolean isShowSatelliteOrbit = false;
     public boolean isShowSensor = false;
     public boolean isShowGroundRegion = false;
@@ -35,7 +34,6 @@ public class DisplayController
     public DisplayController(RenderableLayer layer)
     {
         displayLayer = layer;
-
     }
 
     public void Restart()
@@ -45,28 +43,37 @@ public class DisplayController
         display();
     }
 
-    public void NextFrame()
+    public void ChangeFrame(int second)
     {
-        currentTime.addSeconds(1);
-        if (currentTime.after(endTime))
+        if (second >= 0)
         {
-            currentTime.addSeconds(-1);
+            currentTime.addSeconds(second);
+            if (currentTime.after(endTime))
+            {
+                currentTime.addSeconds(-second);
+            }
+        } else
+        {
+            currentTime.addSeconds(second);
+            if (currentTime.before(startTime))
+            {
+                currentTime.addSeconds(-second);
+            }
         }
         display();
+    }
+
+    public void NextFrame()
+    {
+        ChangeFrame(1);
     }
 
     public void LastFrame()
     {
-        currentTime.addSeconds(-1);
-        if (currentTime.before(startTime))
-        {
-            currentTime.addSeconds(1);
-        }
-        display();
+        ChangeFrame(-1);
     }
 
     private Time currentTime;
-
     private void display()
     {
         displayLayer.removeAllRenderables();
