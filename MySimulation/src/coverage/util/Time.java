@@ -20,6 +20,8 @@ public class Time// implements  Cloneable, Serializable
     private double mjd;
     //修正儒略星历时间
     private double mjde;
+    
+    public String BJTimeStr;
 
     private final static TimeZone DEFAULT_TIMEZONE = TimeZone.getTimeZone("UTC"); // default internal timezone
 
@@ -196,6 +198,8 @@ public class Time// implements  Cloneable, Serializable
     private void updateTimeMeasures() {
         mjd = calcMjd(this.calendar);
         mjde = mjd + deltaT(mjd);
+        
+        BJTimeStr=this.toBJTime();
     }
 
     /**

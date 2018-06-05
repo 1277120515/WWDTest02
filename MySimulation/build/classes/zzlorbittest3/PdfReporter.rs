@@ -1,3 +1,0 @@
-zzlorbittest3.PdfPic$PDFImageType
-zzlorbittest3.PdfPic
-zzlorbittest3.PdfReporter

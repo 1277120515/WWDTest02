@@ -9,6 +9,7 @@ import coverage.util.Time;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import display.iostruct.*;
 import com.vividsolutions.jts.geom.Geometry;
+import java.util.*;
 
 /**
  *
@@ -23,7 +24,7 @@ public class DisplayController
     public boolean isShowCourageRange = false;
     public boolean isShowSatellite = false;
 
-    public SatelliteElem[] satelliteElemArray;
+    public ArrayList<SatelliteElem> satelliteElemList;
     public Geometry ground;
 
     public Time startTime;
@@ -39,7 +40,8 @@ public class DisplayController
     public void Restart()
     {
         currentTime =// startTime.clone();
-                new Time("2014-08-01 00:15:06.000");
+                new Time("2014-08-01 00:02:06.000");
+
         display();
     }
 
@@ -78,9 +80,9 @@ public class DisplayController
     {
         displayLayer.removeAllRenderables();
 
-        if (satelliteElemArray != null && satelliteElemArray.length > 0)
+        if (satelliteElemList != null && satelliteElemList.size() > 0)
         {
-            for (SatelliteElem satelliteElem : satelliteElemArray)
+            for (SatelliteElem satelliteElem : satelliteElemList)
             {
 
                 //±È¿˙√ø“ªø≈Œ¿–«
