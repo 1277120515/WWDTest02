@@ -46,9 +46,7 @@ public class DisplayController
 
     public void Restart()
     {
-//        currentTime =// startTime.clone();
-//               displayControl.endTime.clone();
-
+        currentTime =startTime.clone();
         display();
     }
 

@@ -43,12 +43,9 @@ public class MyTestDialog extends JDialog
 
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("»˝Œ¨œ‘ æ");
 
-        fun();
-        displayControl.currentTime = displayControl.startTime.clone();
+        CalData();
         displayControl.Restart();
 
-        //displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
-        //displayControl.display();
         Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
         btn.addActionListener(new ActionListener()
@@ -154,7 +151,7 @@ public class MyTestDialog extends JDialog
         return shotElem;
     }
 
-    private void fun()
+    private void CalData()
     {
         Time simuStartTime = new Time("2014-08-09 09:15:00.000");
         Time simuEndTime = new Time("2014-08-09 09:25:00.000");
