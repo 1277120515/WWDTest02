@@ -43,13 +43,13 @@ public class MyTestDialog extends JDialog
 
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");
 
-       fun();
-       
+        fun();
+        displayControl.currentTime = displayControl.startTime.clone();
         displayControl.Restart();
 
         //displayControl.currentTime = new Time("2014-08-01 00:15:10.000");
         //displayControl.display();
-        Box box=Box.createVerticalBox();
+        Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
         btn.addActionListener(new ActionListener()
         {
@@ -73,7 +73,7 @@ public class MyTestDialog extends JDialog
             }
         });
         box.add(btn);
-        
+
         btn = new JButton("-1s");
         btn.addActionListener(new ActionListener()
         {
@@ -85,7 +85,7 @@ public class MyTestDialog extends JDialog
             }
         });
         box.add(btn);
-        
+
         btn = new JButton("-10s");
         btn.addActionListener(new ActionListener()
         {
@@ -97,21 +97,20 @@ public class MyTestDialog extends JDialog
             }
         });
         box.add(btn);
-        
+
         this.add(box);
-        
+
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.setPreferredSize(new Dimension(300, 400));
         this.pack();
     }
-    
-    private ShotElem GetShotElem(PositionVelocityOutput[] pvo,Time shotStartTime,Time shotEndTime,double swingAngle , double fov,double maxSwingAngle)
+
+    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle)
     {
         ArrayList<Position> leftPosList = new ArrayList<Position>();
         ArrayList<Position> rightPosList = new ArrayList<Position>();
         ArrayList<Position> leftMaxPosList = new ArrayList<Position>();
-       ArrayList<Position>  rightMaxPosList = new ArrayList<Position>();
-
+        ArrayList<Position> rightMaxPosList = new ArrayList<Position>();
 
         for (PositionVelocityOutput pvo1 : pvo)
         {
@@ -143,22 +142,22 @@ public class MyTestDialog extends JDialog
                 rightMaxPosList.add(Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0));
             }
         }
-        
-        ShotElem shotElem = new ShotElem();
+
+        ShotUnit shotElem = new ShotUnit();
         shotElem.startTime = shotStartTime.clone();
-        shotElem.endTime =shotEndTime.clone();
+        shotElem.endTime = shotEndTime.clone();
         shotElem.leftMaxPosArray = (Position[]) leftMaxPosList.toArray(new Position[leftMaxPosList.size()]);
         shotElem.leftPosArray = (Position[]) leftPosList.toArray(new Position[leftPosList.size()]);
         shotElem.rightMaxPosArray = (Position[]) rightMaxPosList.toArray(new Position[rightMaxPosList.size()]);
         shotElem.rightPosArray = (Position[]) rightPosList.toArray(new Position[rightPosList.size()]);
-        
+
         return shotElem;
     }
-    
+
     private void fun()
     {
-        Time simuStartTime = new Time("2014-08-01 00:00:00.000");
-        Time simuEndTime = new Time("2014-08-01 00:10:00.000");
+        Time simuStartTime = new Time("2014-08-09 09:15:00.000");
+        Time simuEndTime = new Time("2014-08-09 09:25:00.000");
 
         displayControl = new DisplayController(displayLayer);
 
@@ -169,16 +168,14 @@ public class MyTestDialog extends JDialog
         displayControl.isShowMaxCourageRange = true;
         displayControl.isShowGroundRegion = true;
 
-
-
         displayControl.satelliteElemList = new ArrayList<SatelliteElem>();
         //displayControl.satelliteElemArray[0] = satelliteElem;
         displayControl.startTime = simuStartTime.clone();
         displayControl.endTime = simuEndTime.clone();
-        displayControl.ground=null;
+        displayControl.ground = null;
 
         SatelliteElem satelliteElem;
-        ShotElem shotElem;
+        ShotUnit shotUnit;
 
         HashMap<String, String> tleMap = ProcessResource.ReadTle("src\\resource\\tle.txt");
         String satelliteXml;
@@ -187,13 +184,13 @@ public class MyTestDialog extends JDialog
 
         //第一颗卫星
         satelliteElem = new SatelliteElem();
-        satelliteElem.satelliteName = "SAT 01";
+        satelliteElem.satelliteName = "Satellite 01";
         satelliteElem.startTime = displayControl.startTime.clone();
         satelliteElem.endTime = displayControl.endTime.clone();
 
         satelliteXml = "zy02c.xml";
         sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
-        Time endTimePlus1s=displayControl.endTime.clone();
+        Time endTimePlus1s = displayControl.endTime.clone();
         endTimePlus1s.addSeconds(1);
         pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
 
@@ -203,24 +200,24 @@ public class MyTestDialog extends JDialog
             satelliteElem.satellitePosArray[i] = Position.fromDegrees(pvo[i].Lat, pvo[i].Lon, pvo[i].Alt);
         }
 
-        satelliteElem.shotElemList=new ArrayList<ShotElem>();
-        
-        shotElem = GetShotElem(pvo, new Time("2014-08-01 00:02:00.000"), new Time("2014-08-01 00:03:00.000"), -10, 8, 25);
-        satelliteElem.shotElemList.add(shotElem);
-        shotElem = GetShotElem(pvo, new Time("2014-08-01 00:02:00.000"), new Time("2014-08-01 00:03:00.000"), 10, 8,25);
-        satelliteElem.shotElemList.add(shotElem);
-        
+        satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
+
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), -10, 8, 25);
+        satelliteElem.shotUnitList.add(shotUnit);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25);
+        satelliteElem.shotUnitList.add(shotUnit);
+
         displayControl.satelliteElemList.add(satelliteElem);
-        
+
         //第二颗卫星
         satelliteElem = new SatelliteElem();
-        satelliteElem.satelliteName = "SAT 01";
+        satelliteElem.satelliteName = "Satellite 2";
         satelliteElem.startTime = displayControl.startTime.clone();
         satelliteElem.endTime = displayControl.endTime.clone();
 
-        satelliteXml = "gf1.xml";
+        satelliteXml = "worldview2.xml";
         sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
-        endTimePlus1s=displayControl.endTime.clone();
+        endTimePlus1s = displayControl.endTime.clone();
         endTimePlus1s.addSeconds(1);
         pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
 
@@ -230,15 +227,38 @@ public class MyTestDialog extends JDialog
             satelliteElem.satellitePosArray[i] = Position.fromDegrees(pvo[i].Lat, pvo[i].Lon, pvo[i].Alt);
         }
 
-        satelliteElem.shotElemList=new ArrayList<ShotElem>();
-        
-        shotElem = GetShotElem(pvo, new Time("2014-08-01 00:02:00.000"), new Time("2014-08-01 00:03:00.000"), -10, 8, 25);
-        satelliteElem.shotElemList.add(shotElem);
-        shotElem = GetShotElem(pvo, new Time("2014-08-01 00:02:00.000"), new Time("2014-08-01 00:03:00.000"), 10, 8,25);
-        satelliteElem.shotElemList.add(shotElem);
-        
+        satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
+
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30);
+        satelliteElem.shotUnitList.add(shotUnit);
+
         displayControl.satelliteElemList.add(satelliteElem);
-        
+
+        //第三颗卫星
+        satelliteElem = new SatelliteElem();
+        satelliteElem.satelliteName = "Satellite 03";
+        satelliteElem.startTime = displayControl.startTime.clone();
+        satelliteElem.endTime = displayControl.endTime.clone();
+
+        satelliteXml = "spot7.xml";
+        sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
+        endTimePlus1s = displayControl.endTime.clone();
+        endTimePlus1s.addSeconds(1);
+        pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
+
+        satelliteElem.satellitePosArray = new Position[pvo.length];
+        for (int i = 0; i < pvo.length; i++)
+        {
+            satelliteElem.satellitePosArray[i] = Position.fromDegrees(pvo[i].Lat, pvo[i].Lon, pvo[i].Alt);
+        }
+
+        satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
+
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30);
+        satelliteElem.shotUnitList.add(shotUnit);
+
+        displayControl.satelliteElemList.add(satelliteElem);
+
     }
- 
+
 }

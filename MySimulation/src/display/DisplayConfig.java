@@ -20,7 +20,7 @@ public class DisplayConfig
     public static double sensorInnerOpacity = 0.4;
     public static Color sensorOutlineColor = Color.green;
     public static double sensorOutlineOpacity = 1;
-    public static Color scanLineColor = Color.BLUE;
+    public static Color scanLineColor = Color.RED;
     public static double scanLineWidth = 4;
     public static double scanLineOpacity = 1;
 

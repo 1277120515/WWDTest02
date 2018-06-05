@@ -33,7 +33,7 @@ public class SatelliteElem
     public Time endTime;
     public Position[] satellitePosArray;
 
-    public ArrayList<ShotElem> shotElemList;
+    public ArrayList<ShotUnit> shotUnitList;  
 
     public void ShowSatellite(RenderableLayer layer, Time currentTime)
     {
@@ -126,12 +126,12 @@ public class SatelliteElem
             }
             satelliteIndex--;
 
-            for (ShotElem shotElem : shotElemList)
+            for (ShotUnit shotUnit : shotUnitList)
             {
-                if (currentTime.afterOrEqual(shotElem.startTime) && currentTime.beforeOrEqual(shotElem.endTime))
+                if (currentTime.afterOrEqual(shotUnit.startTime) && currentTime.beforeOrEqual(shotUnit.endTime))
                 {
                     int shotIndex = 0;
-                    for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
+                    for (Time tempTime = shotUnit.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotUnit.endTime); tempTime.addSeconds(1))
                     {
                         if (tempTime.after(currentTime))
                         {
@@ -167,12 +167,12 @@ public class SatelliteElem
                     posList.add(satellitePosArray[satelliteIndex]);
                     if (isMax == false)
                     {
-                        posList.add(shotElem.leftPosArray[shotIndex]);
-                        posList.add(shotElem.rightPosArray[shotIndex]);
+                        posList.add(shotUnit.leftPosArray[shotIndex]);
+                        posList.add(shotUnit.rightPosArray[shotIndex]);
                     } else
                     {
-                        posList.add(shotElem.leftMaxPosArray[shotIndex]);
-                        posList.add(shotElem.rightMaxPosArray[shotIndex]);
+                        posList.add(shotUnit.leftMaxPosArray[shotIndex]);
+                        posList.add(shotUnit.rightMaxPosArray[shotIndex]);
                     }
                     pg.setOuterBoundary(posList);
                     layer.addRenderable(pg);
@@ -217,13 +217,13 @@ public class SatelliteElem
 
     private void ShowRange(RenderableLayer layer, Time currentTime, boolean isMax)
     {
-        for (ShotElem shotElem : shotElemList)
+        for (ShotUnit shotUnit : shotUnitList)
         {
-            if (currentTime.afterOrEqual(shotElem.startTime) && currentTime.beforeOrEqual(shotElem.endTime))
+            if (currentTime.afterOrEqual(shotUnit.startTime) && currentTime.beforeOrEqual(shotUnit.endTime))
             {
 
                 int shotIndex = 0;
-                for (Time tempTime = shotElem.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotElem.endTime); tempTime.addSeconds(1))
+                for (Time tempTime = shotUnit.startTime.clone(); tempTime.beforeOrEqual(currentTime) && tempTime.beforeOrEqual(shotUnit.endTime); tempTime.addSeconds(1))
                 {
                     if (tempTime.after(currentTime))
                     {
@@ -236,11 +236,11 @@ public class SatelliteElem
                 ArrayList<Position> stripeOutlineList = new ArrayList<Position>();
                 for (int i = 0; i <= shotIndex; i++)
                 {
-                    stripeOutlineList.add(shotElem.leftPosArray[i]);
+                    stripeOutlineList.add(shotUnit.leftPosArray[i]);
                 }
                 for (int i = shotIndex; i >= 0; i--)
                 {
-                    stripeOutlineList.add(shotElem.rightPosArray[i]);
+                    stripeOutlineList.add(shotUnit.rightPosArray[i]);
                 }
                 SurfacePolygon stripeOutline = new SurfacePolygon();
 
@@ -259,6 +259,35 @@ public class SatelliteElem
 
                 layer.addRenderable(stripeOutline);
 
+            }
+            else if(currentTime.after(shotUnit.endTime))
+            {
+                ArrayList<Position> stripeOutlineList = new ArrayList<Position>();
+                int len=shotUnit.leftPosArray.length;
+                for (int i = 0; i <len; i++)
+                {
+                    stripeOutlineList.add(shotUnit.leftPosArray[i]);
+                }
+                for (int i = len-1; i >= 0; i--)
+                {
+                    stripeOutlineList.add(shotUnit.rightPosArray[i]);
+                }
+                SurfacePolygon stripeOutline = new SurfacePolygon();
+
+                ShapeAttributes attrs = new BasicShapeAttributes();
+                attrs.setDrawInterior(true);
+                attrs.setInteriorMaterial(new Material(DisplayConfig.stripeInnerColor));
+                attrs.setInteriorOpacity(DisplayConfig.stripeInnerOpacity);
+                attrs.setDrawOutline(true);
+                attrs.setOutlineMaterial(new Material(DisplayConfig.stripeOutlineColor));
+                attrs.setOutlineWidth(DisplayConfig.stripeOutlineWidth);
+                attrs.setOutlineOpacity(DisplayConfig.stripeOutlineOpacity);
+                stripeOutline.setAttributes(attrs);
+                stripeOutline.setHighlightAttributes(attrs);
+
+                stripeOutline.setLocations(stripeOutlineList);
+
+                layer.addRenderable(stripeOutline);
             }
 
         }
