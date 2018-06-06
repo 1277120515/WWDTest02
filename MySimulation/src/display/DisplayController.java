@@ -9,15 +9,18 @@ import coverage.util.Time;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import display.iostruct.*;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiPolygon;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.AnnotationAttributes;
 import gov.nasa.worldwind.render.ScreenRelativeAnnotation;
+import gov.nasa.worldwind.render.SurfacePolygon;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.util.*;
 import javax.swing.JOptionPane;
+import simulationpanel.RegionManagerClass;
 
 /**
  *
@@ -33,7 +36,7 @@ public class DisplayController
     public boolean isShowSatellite = false;
 
     public ArrayList<SatelliteElem> satelliteElemList;
-    public Geometry ground;
+    public MultiPolygon ground;
 
     public Time startTime;
     public Time endTime;
@@ -205,10 +208,12 @@ public class DisplayController
 
             }
         }
-
-        if (isShowGroundRegion == true)
-        {
-
+        
+        if (isShowGroundRegion == true) {
+            SurfacePolygon[] spArray = RegionManagerClass.MultiPolygon2SurfacePolygon(ground);
+            for (int i = 0; i < spArray.length; i++) {
+                displayLayer.addRenderable(spArray[i]);
+            }
         }
         /////////////////////////////////////////////////////////
 

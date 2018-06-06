@@ -22,6 +22,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.JButton;
+import simulationpanel.RegionManagerClass;
 
 /**
  *
@@ -185,7 +186,7 @@ public class MyTestDialog extends JDialog
         //displayControl.satelliteElemArray[0] = satelliteElem;
         dc.startTime = simuStartTime.clone();
         dc.endTime = simuEndTime.clone();
-        dc.ground = null;
+        dc.ground =RegionManagerClass.Shape2MultiPolygon("file\\china4.shp");
 
         SatelliteElem satelliteElem;
         ShotUnit shotUnit;
