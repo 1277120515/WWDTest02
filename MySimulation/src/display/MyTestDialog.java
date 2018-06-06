@@ -44,7 +44,8 @@ public class MyTestDialog extends JDialog
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("»˝Œ¨œ‘ æ");
 
         displayController = this.CalDisplayController();
-        displayController.Restart();
+        displayController.ReSet();
+                displayController.Start();
 
         Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
@@ -54,7 +55,7 @@ public class MyTestDialog extends JDialog
             public void actionPerformed(ActionEvent e)
             {
                 displayController.NextFrame();
-                wwd.redraw();
+                //wwd.redraw();
             }
         });
         box.add(btn);
@@ -66,7 +67,7 @@ public class MyTestDialog extends JDialog
             public void actionPerformed(ActionEvent e)
             {
                 displayController.ChangeFrame(10);
-                wwd.redraw();
+                //wwd.redraw();
             }
         });
         box.add(btn);
@@ -78,7 +79,7 @@ public class MyTestDialog extends JDialog
             public void actionPerformed(ActionEvent e)
             {
                 displayController.LastFrame();
-                wwd.redraw();
+                //wwd.redraw();
             }
         });
         box.add(btn);
@@ -90,7 +91,7 @@ public class MyTestDialog extends JDialog
             public void actionPerformed(ActionEvent e)
             {
                 displayController.ChangeFrame(-10);
-                wwd.redraw();
+                //wwd.redraw();
             }
         });
         box.add(btn);
@@ -171,7 +172,7 @@ public class MyTestDialog extends JDialog
         Time simuStartTime = new Time("2014-08-09 09:15:00.000");
         Time simuEndTime = new Time("2014-08-09 09:25:00.000");
 
-        DisplayController dc = new DisplayController(displayLayer);
+        DisplayController dc = new DisplayController(wwd,displayLayer);
 
         dc.isShowSatellite = true;
         dc.isShowSatelliteOrbit = true;

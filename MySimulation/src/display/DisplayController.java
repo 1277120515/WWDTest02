@@ -9,6 +9,7 @@ import coverage.util.Time;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import display.iostruct.*;
 import com.vividsolutions.jts.geom.Geometry;
+import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.render.AnnotationAttributes;
 import gov.nasa.worldwind.render.ScreenRelativeAnnotation;
@@ -38,14 +39,54 @@ public class DisplayController
     public Time endTime;
 
     private RenderableLayer displayLayer;
+    WorldWindow wwd;
 
-    public DisplayController(RenderableLayer layer)
+    public DisplayController(WorldWindow wwd,RenderableLayer layer)
     {
         displayLayer = layer;
+        this.wwd=wwd;
+        
+        InitTimer();
     }
 
-    public void Restart()
+    public Time currentTime;
+
+    private boolean isRun = false;
+    private int speed = 1;
+
+    private void InitTimer() {
+        TimerTask task = new TimerTask() {
+            @Override
+            public void run() {
+                if (isRun == true) {
+                    ChangeFrame(speed);
+                }
+            }
+        };
+        Timer timer = new Timer();
+        timer.schedule(task, 0, 1000);
+    }
+
+    public void SetSpeed(int s)
     {
+        speed=s;
+    }
+    public int GetSpeed()
+    {
+        return speed;
+    }
+    public void Start()
+    {
+        isRun=true;
+    }
+    public void Suspend()
+    {
+        isRun=!isRun;
+    }
+    public void ReSet()
+    {
+        isRun=false;
+        speed=1;
         currentTime =startTime.clone();
         display();
     }
@@ -80,7 +121,6 @@ public class DisplayController
         ChangeFrame(-1);
     }
 
-   public  Time currentTime;
 
     private boolean CheckTime()
     {
@@ -173,7 +213,8 @@ public class DisplayController
         /////////////////////////////////////////////////////////
 
         ShowInfoBoard();
-
+        
+        wwd.redraw();
     }
 
     private void ShowInfoBoard()
