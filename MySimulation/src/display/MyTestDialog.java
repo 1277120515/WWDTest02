@@ -43,9 +43,8 @@ public class MyTestDialog extends JDialog
 
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");
 
-        displayController=this.CalDisplayController();
+        displayController = this.CalDisplayController();
         displayController.Restart();
-
 
         Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
@@ -103,33 +102,48 @@ public class MyTestDialog extends JDialog
         this.pack();
     }
 
-    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle)
+    
+
+    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle,int type)
     {
         ArrayList<Position> leftPosList = new ArrayList<Position>();
         ArrayList<Position> rightPosList = new ArrayList<Position>();
         ArrayList<Position> leftMaxPosList = new ArrayList<Position>();
         ArrayList<Position> rightMaxPosList = new ArrayList<Position>();
 
-        for (PositionVelocityOutput pvo1 : pvo)
-        {
+        int type_index = 0;
+        double swing_type2[] = new double[]{0.0, 2.1, 4.1, 5.9, 7.4, 8.7, 9.5, 9.9, 9.9, 9.5, 8.7, 7.4, 5.9, 4.1, 2.1, 0.0, -2.1, -4.1, -5.9, -7.4, -8.7, -9.5, -9.9, -9.9, -9.5, -8.7, -7.4, -5.9, -4.1, -2.1};
+        double swing_type3[] = new double[]{-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -9, -8, -7, -6, -5, -4, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 ,- 2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2};
+
+        for (PositionVelocityOutput pvo1 : pvo) {
             if (pvo1.Time.afterOrEqual(shotStartTime) && pvo1.Time.beforeOrEqual(shotEndTime))
             {
                 double[] r1;
                 double[] v1;
-                double[] LonLatLeft;
-                double[] LonLatRight;
+                double[] LonLatLeft=new double[2];
+                double[] LonLatRight=new double[2];
 
+                type_index++;
                 r1 = new double[]
                 {
                     pvo1.x_J2000C, pvo1.y_J2000C, pvo1.z_J2000C
                 };
-                v1 = new double[]
-                {
+                v1 = new double[]{
                     pvo1.vx_J2000C, pvo1.vy_J2000C, pvo1.vz_J2000C
                 };
-                LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
-                LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
-
+                if (type == 1) {
+                    LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
+                    LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
+                } else if (type == 2) {
+                    swingAngle = swing_type2[type_index%swing_type2.length];
+                    LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
+                    LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
+                } else//type=3;
+                {
+                    swingAngle = swing_type3[type_index%swing_type3.length];
+                    LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
+                    LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
+                }
                 leftPosList.add(Position.fromDegrees(LonLatLeft[1], LonLatLeft[0], 0));
                 rightPosList.add(Position.fromDegrees(LonLatRight[1], LonLatRight[0], 0));
 
@@ -200,9 +214,9 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), -10, 8, 25);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25,1);
         satelliteElem.shotUnitList.add(shotUnit);
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25,3);
         satelliteElem.shotUnitList.add(shotUnit);
 
         dc.satelliteElemList.add(satelliteElem);
@@ -227,7 +241,7 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30,2);
         satelliteElem.shotUnitList.add(shotUnit);
 
         dc.satelliteElemList.add(satelliteElem);
@@ -252,7 +266,7 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30,3);
         satelliteElem.shotUnitList.add(shotUnit);
 
        dc.satelliteElemList.add(satelliteElem);
