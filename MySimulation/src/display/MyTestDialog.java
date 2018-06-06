@@ -5,6 +5,9 @@
  */
 package display;
 
+import display.util.DisplayController;
+import display.util.SatelliteElem;
+import display.util.ShotUnit;
 import coverage.OneDayCoverage;
 import coverage.iostruct.PositionVelocityOutput;
 import coverage.iostruct.ProcessResource;
@@ -15,7 +18,6 @@ import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwindx.applications.worldwindow.core.Controller;
 import java.awt.*;
 import javax.swing.*;
-import display.iostruct.*;
 import coverage.util.Time;
 import gov.nasa.worldwind.geom.Position;
 import java.awt.event.ActionEvent;
@@ -45,18 +47,81 @@ public class MyTestDialog extends JDialog
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");
 
         displayController = this.CalDisplayController();
-        displayController.ReSet();
-        displayController.Start();
+        displayController.Reset();
 
         Box box = Box.createVerticalBox();
-        JButton btn = new JButton("+1s");
+        JButton btn;
+
+        btn = new JButton("开始");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayController.Start();
+            }
+        });
+        box.add(btn);
+
+        btn = new JButton("暂停");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayController.Suspend();
+            }
+        });
+        box.add(btn);
+
+        btn = new JButton("重置");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                displayController.Reset();
+            }
+        });
+        box.add(btn);
+
+        btn = new JButton("加速");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                int speed = displayController.GetSpeed();
+                if (speed <= 8)
+                {
+                    displayController.SetSpeed(speed * 2);
+                }
+            }
+        });
+        box.add(btn);
+
+        btn = new JButton("减速");
+        btn.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                int speed = displayController.GetSpeed();
+                if (speed > 1)
+                {
+                    displayController.SetSpeed(speed / 2);
+                }
+            }
+        });
+        box.add(btn);
+
+        btn = new JButton("+ 1s");
         btn.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
                 displayController.NextFrame();
-                //wwd.redraw();
             }
         });
         box.add(btn);
@@ -73,7 +138,7 @@ public class MyTestDialog extends JDialog
         });
         box.add(btn);
 
-        btn = new JButton("-1s");
+        btn = new JButton("- 1s");
         btn.addActionListener(new ActionListener()
         {
             @Override

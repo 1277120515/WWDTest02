@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display;
+package display.util;
+
 
 import coverage.util.Time;
 import gov.nasa.worldwind.layers.RenderableLayer;
-import display.iostruct.*;
-import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import gov.nasa.worldwind.WorldWindow;
 import gov.nasa.worldwind.avlist.AVKey;
@@ -94,7 +93,7 @@ public class DisplayController
         isRun = !isRun;
     }
 
-    public void ReSet()
+    public void Reset()
     {
         isRun = false;
         speed = 1;
@@ -233,6 +232,8 @@ public class DisplayController
     private void ShowInfoBoard()
     {
         String infoString = "当前时间 : " + currentTime.toBJTime();
+        infoString+=String.format("\nCurrent Speed: %d", speed);
+        
         AnnotationAttributes attr = new AnnotationAttributes();
         attr.setBackgroundColor(new Color(0.2f, 0.2f, 0.2f, 0f));
         attr.setTextColor(Color.YELLOW);

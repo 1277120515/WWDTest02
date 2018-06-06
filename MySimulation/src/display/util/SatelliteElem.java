@@ -3,22 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package display.iostruct;
+package display.util;
 
-import com.vividsolutions.jts.geom.Geometry;
-import coverage.util.CoorTrans;
 import coverage.util.Time;
-import display.DisplayConfig;
 import gov.nasa.worldwind.WorldWind;
-import gov.nasa.worldwind.avlist.AVKey;
 import gov.nasa.worldwind.geom.Position;
 import gov.nasa.worldwind.layers.RenderableLayer;
 import gov.nasa.worldwind.render.*;
 import java.awt.Color;
 import java.awt.Insets;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 /**
  *
