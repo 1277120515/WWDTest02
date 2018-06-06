@@ -33,7 +33,7 @@ public class MyTestDialog extends JDialog
     WorldWindow wwd;
     RenderableLayer displayLayer;
 
-    DisplayController displayControl;
+    DisplayController displayController;
 
     public MyTestDialog(Controller c, Frame owner)
     {
@@ -43,8 +43,9 @@ public class MyTestDialog extends JDialog
 
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");
 
-        CalData();
-        displayControl.Restart();
+        displayController=this.CalDisplayController();
+        displayController.Restart();
+
 
         Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
@@ -53,7 +54,7 @@ public class MyTestDialog extends JDialog
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                displayControl.NextFrame();
+                displayController.NextFrame();
                 wwd.redraw();
             }
         });
@@ -65,7 +66,7 @@ public class MyTestDialog extends JDialog
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                displayControl.ChangeFrame(10);
+                displayController.ChangeFrame(10);
                 wwd.redraw();
             }
         });
@@ -77,7 +78,7 @@ public class MyTestDialog extends JDialog
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                displayControl.LastFrame();
+                displayController.LastFrame();
                 wwd.redraw();
             }
         });
@@ -89,7 +90,7 @@ public class MyTestDialog extends JDialog
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                displayControl.ChangeFrame(-10);
+                displayController.ChangeFrame(-10);
                 wwd.redraw();
             }
         });
@@ -151,25 +152,25 @@ public class MyTestDialog extends JDialog
         return shotElem;
     }
 
-    private void CalData()
+    private DisplayController CalDisplayController()
     {
         Time simuStartTime = new Time("2014-08-09 09:15:00.000");
         Time simuEndTime = new Time("2014-08-09 09:25:00.000");
 
-        displayControl = new DisplayController(displayLayer);
+        DisplayController dc = new DisplayController(displayLayer);
 
-        displayControl.isShowSatellite = true;
-        displayControl.isShowSatelliteOrbit = true;
-        displayControl.isShowSensor = true;
-        displayControl.isShowCourageRange = true;
-        displayControl.isShowMaxCourageRange = true;
-        displayControl.isShowGroundRegion = true;
+        dc.isShowSatellite = true;
+        dc.isShowSatelliteOrbit = true;
+        dc.isShowSensor = true;
+        dc.isShowCourageRange = true;
+        dc.isShowMaxCourageRange = true;
+       dc.isShowGroundRegion = true;
 
-        displayControl.satelliteElemList = new ArrayList<SatelliteElem>();
+        dc.satelliteElemList = new ArrayList<SatelliteElem>();
         //displayControl.satelliteElemArray[0] = satelliteElem;
-        displayControl.startTime = simuStartTime.clone();
-        displayControl.endTime = simuEndTime.clone();
-        displayControl.ground = null;
+        dc.startTime = simuStartTime.clone();
+        dc.endTime = simuEndTime.clone();
+        dc.ground = null;
 
         SatelliteElem satelliteElem;
         ShotUnit shotUnit;
@@ -182,14 +183,14 @@ public class MyTestDialog extends JDialog
         //第一颗卫星
         satelliteElem = new SatelliteElem();
         satelliteElem.satelliteName = "Satellite 01";
-        satelliteElem.startTime = displayControl.startTime.clone();
-        satelliteElem.endTime = displayControl.endTime.clone();
+        satelliteElem.startTime = dc.startTime.clone();
+        satelliteElem.endTime = dc.endTime.clone();
 
         satelliteXml = "zy02c.xml";
         sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
-        Time endTimePlus1s = displayControl.endTime.clone();
+        Time endTimePlus1s = dc.endTime.clone();
         endTimePlus1s.addSeconds(1);
-        pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
+        pvo = OneDayCoverage.calPosition(sli, dc.startTime.clone(), endTimePlus1s, 1);
 
         satelliteElem.satellitePosArray = new Position[pvo.length];
         for (int i = 0; i < pvo.length; i++)
@@ -204,19 +205,19 @@ public class MyTestDialog extends JDialog
         shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25);
         satelliteElem.shotUnitList.add(shotUnit);
 
-        displayControl.satelliteElemList.add(satelliteElem);
+        dc.satelliteElemList.add(satelliteElem);
 
         //第二颗卫星
         satelliteElem = new SatelliteElem();
         satelliteElem.satelliteName = "Satellite 2";
-        satelliteElem.startTime = displayControl.startTime.clone();
-        satelliteElem.endTime = displayControl.endTime.clone();
+        satelliteElem.startTime = dc.startTime.clone();
+        satelliteElem.endTime = dc.endTime.clone();
 
         satelliteXml = "worldview2.xml";
         sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
-        endTimePlus1s = displayControl.endTime.clone();
+        endTimePlus1s = dc.endTime.clone();
         endTimePlus1s.addSeconds(1);
-        pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
+        pvo = OneDayCoverage.calPosition(sli, dc.startTime.clone(), endTimePlus1s, 1);
 
         satelliteElem.satellitePosArray = new Position[pvo.length];
         for (int i = 0; i < pvo.length; i++)
@@ -229,19 +230,19 @@ public class MyTestDialog extends JDialog
         shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30);
         satelliteElem.shotUnitList.add(shotUnit);
 
-        displayControl.satelliteElemList.add(satelliteElem);
+        dc.satelliteElemList.add(satelliteElem);
 
         //第三颗卫星
         satelliteElem = new SatelliteElem();
         satelliteElem.satelliteName = "Satellite 03";
-        satelliteElem.startTime = displayControl.startTime.clone();
-        satelliteElem.endTime = displayControl.endTime.clone();
+        satelliteElem.startTime = dc.startTime.clone();
+        satelliteElem.endTime = dc.endTime.clone();
 
         satelliteXml = "spot7.xml";
         sli = ProcessResource.ReadSatellite("src\\resource\\satellite\\" + satelliteXml, tleMap);
-        endTimePlus1s = displayControl.endTime.clone();
+        endTimePlus1s = dc.endTime.clone();
         endTimePlus1s.addSeconds(1);
-        pvo = OneDayCoverage.calPosition(sli, displayControl.startTime.clone(), endTimePlus1s, 1);
+        pvo = OneDayCoverage.calPosition(sli, dc.startTime.clone(), endTimePlus1s, 1);
 
         satelliteElem.satellitePosArray = new Position[pvo.length];
         for (int i = 0; i < pvo.length; i++)
@@ -254,7 +255,9 @@ public class MyTestDialog extends JDialog
         shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30);
         satelliteElem.shotUnitList.add(shotUnit);
 
-        displayControl.satelliteElemList.add(satelliteElem);
+       dc.satelliteElemList.add(satelliteElem);
+       
+       return dc;
 
     }
 
