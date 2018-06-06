@@ -1,2 +1,0 @@
-coverage.CloudDataBase
-coverage.CloudDBRecord

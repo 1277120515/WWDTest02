@@ -1,2 +1,0 @@
-zzlorbittest3.GridGraphic
-zzlorbittest3.GridGraphicPanel
