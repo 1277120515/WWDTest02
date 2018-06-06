@@ -46,7 +46,7 @@ public class MyTestDialog extends JDialog
 
         displayController = this.CalDisplayController();
         displayController.ReSet();
-                displayController.Start();
+        displayController.Start();
 
         Box box = Box.createVerticalBox();
         JButton btn = new JButton("+1s");
@@ -104,9 +104,7 @@ public class MyTestDialog extends JDialog
         this.pack();
     }
 
-    
-
-    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle,int type)
+    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle, int type)
     {
         ArrayList<Position> leftPosList = new ArrayList<Position>();
         ArrayList<Position> rightPosList = new ArrayList<Position>();
@@ -114,35 +112,45 @@ public class MyTestDialog extends JDialog
         ArrayList<Position> rightMaxPosList = new ArrayList<Position>();
 
         int type_index = 0;
-        double swing_type2[] = new double[]{0.0, 2.1, 4.1, 5.9, 7.4, 8.7, 9.5, 9.9, 9.9, 9.5, 8.7, 7.4, 5.9, 4.1, 2.1, 0.0, -2.1, -4.1, -5.9, -7.4, -8.7, -9.5, -9.9, -9.9, -9.5, -8.7, -7.4, -5.9, -4.1, -2.1};
-        double swing_type3[] = new double[]{-10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -9, -8, -7, -6, -5, -4, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2 ,- 2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2};
+        double swing_type2[] = new double[]
+        {
+            0.0, 2.1, 4.1, 5.9, 7.4, 8.7, 9.5, 9.9, 9.9, 9.5, 8.7, 7.4, 5.9, 4.1, 2.1, 0.0, -2.1, -4.1, -5.9, -7.4, -8.7, -9.5, -9.9, -9.9, -9.5, -8.7, -7.4, -5.9, -4.1, -2.1
+        };
+        double swing_type3[] = new double[]
+        {
+            -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -10, -9, -8, -7, -6, -5, -4, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, - 2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2, -2
+        };
 
-        for (PositionVelocityOutput pvo1 : pvo) {
+        for (PositionVelocityOutput pvo1 : pvo)
+        {
             if (pvo1.Time.afterOrEqual(shotStartTime) && pvo1.Time.beforeOrEqual(shotEndTime))
             {
                 double[] r1;
                 double[] v1;
-                double[] LonLatLeft=new double[2];
-                double[] LonLatRight=new double[2];
+                double[] LonLatLeft = new double[2];
+                double[] LonLatRight = new double[2];
 
                 type_index++;
                 r1 = new double[]
                 {
                     pvo1.x_J2000C, pvo1.y_J2000C, pvo1.z_J2000C
                 };
-                v1 = new double[]{
+                v1 = new double[]
+                {
                     pvo1.vx_J2000C, pvo1.vy_J2000C, pvo1.vz_J2000C
                 };
-                if (type == 1) {
+                if (type == 1)
+                {
                     LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
                     LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
-                } else if (type == 2) {
-                    swingAngle = swing_type2[type_index%swing_type2.length];
+                } else if (type == 2)
+                {
+                    swingAngle = swing_type2[type_index % swing_type2.length];
                     LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
                     LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
                 } else//type=3;
                 {
-                    swingAngle = swing_type3[type_index%swing_type3.length];
+                    swingAngle = swing_type3[type_index % swing_type3.length];
                     LonLatLeft = CoorTrans.getScanLatLon(r1, v1, swingAngle + fov / 2, 0);     //左侧 扫描边界与地球交点经纬度
                     LonLatRight = CoorTrans.getScanLatLon(r1, v1, swingAngle - fov / 2, 0);    //右侧 扫描边界与地球交点经纬度
                 }
@@ -173,20 +181,20 @@ public class MyTestDialog extends JDialog
         Time simuStartTime = new Time("2014-08-09 09:15:00.000");
         Time simuEndTime = new Time("2014-08-09 09:25:00.000");
 
-        DisplayController dc = new DisplayController(wwd,displayLayer);
+        DisplayController dc = new DisplayController(wwd, displayLayer);
 
         dc.isShowSatellite = true;
         dc.isShowSatelliteOrbit = true;
         dc.isShowSensor = true;
         dc.isShowCourageRange = true;
         dc.isShowMaxCourageRange = true;
-       dc.isShowGroundRegion = true;
+        dc.isShowGroundRegion = true;
 
         dc.satelliteElemList = new ArrayList<SatelliteElem>();
         //displayControl.satelliteElemArray[0] = satelliteElem;
         dc.startTime = simuStartTime.clone();
         dc.endTime = simuEndTime.clone();
-        dc.ground =RegionManagerClass.Shape2MultiPolygon("file\\china4.shp");
+        dc.ground = RegionManagerClass.Shape2MultiPolygon("file\\squ3.shp");
 
         SatelliteElem satelliteElem;
         ShotUnit shotUnit;
@@ -216,9 +224,9 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25,1);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25, 1);
         satelliteElem.shotUnitList.add(shotUnit);
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25,3);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:05.000"), new Time("2014-08-09 09:16:00.000"), 10, 8, 25, 3);
         satelliteElem.shotUnitList.add(shotUnit);
 
         dc.satelliteElemList.add(satelliteElem);
@@ -243,7 +251,7 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30,2);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30, 2);
         satelliteElem.shotUnitList.add(shotUnit);
 
         dc.satelliteElemList.add(satelliteElem);
@@ -268,12 +276,12 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
-        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30,3);
+        shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:02.000"), new Time("2014-08-09 09:16:07.000"), 8, 20, 30, 3);
         satelliteElem.shotUnitList.add(shotUnit);
 
-       dc.satelliteElemList.add(satelliteElem);
-       
-       return dc;
+        dc.satelliteElemList.add(satelliteElem);
+
+        return dc;
 
     }
 

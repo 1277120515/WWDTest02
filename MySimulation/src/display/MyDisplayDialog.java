@@ -54,10 +54,7 @@ public class MyDisplayDialog extends JDialog
 
         // wwd.getModel().getLayers().add(displayLayer);
         //ActiveLayersPanel activeLayersPanel=(ActiveLayersPanel)controller.getRegisteredObject(Constants.FEATURE_ACTIVE_LAYERS_PANEL);
-
         InitDialog();
-
-
 
         InitSatellitePos();
         InitScene();
@@ -118,8 +115,6 @@ public class MyDisplayDialog extends JDialog
             }
         });
         box.add(btn);
-
-
 
         btn = new JButton("减速");
         btn.addActionListener(new ActionListener()
@@ -335,8 +330,6 @@ public class MyDisplayDialog extends JDialog
 
         displayLayer.removeAllRenderables();
 
-
-
         //显示传感器三角
         ArrayList<Position> posList = new ArrayList<Position>();
         posList.add(satellitePos);
@@ -348,8 +341,6 @@ public class MyDisplayDialog extends JDialog
         //显示卫星
         satellite3d.moveTo(satellitePos);
         displayLayer.addRenderable(satellite3d);
-
-
 
         //显示条带
         if (animationStep != 0)
@@ -404,7 +395,6 @@ public class MyDisplayDialog extends JDialog
 
         wwd.redraw();
     }
-
 
     int isAnimation = 0;
     int AnimationSpeed = 1;

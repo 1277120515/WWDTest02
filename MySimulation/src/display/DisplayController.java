@@ -44,11 +44,11 @@ public class DisplayController
     private RenderableLayer displayLayer;
     WorldWindow wwd;
 
-    public DisplayController(WorldWindow wwd,RenderableLayer layer)
+    public DisplayController(WorldWindow wwd, RenderableLayer layer)
     {
         displayLayer = layer;
-        this.wwd=wwd;
-        
+        this.wwd = wwd;
+
         InitTimer();
     }
 
@@ -57,11 +57,15 @@ public class DisplayController
     private boolean isRun = false;
     private int speed = 1;
 
-    private void InitTimer() {
-        TimerTask task = new TimerTask() {
+    private void InitTimer()
+    {
+        TimerTask task = new TimerTask()
+        {
             @Override
-            public void run() {
-                if (isRun == true) {
+            public void run()
+            {
+                if (isRun == true)
+                {
                     ChangeFrame(speed);
                 }
             }
@@ -72,25 +76,29 @@ public class DisplayController
 
     public void SetSpeed(int s)
     {
-        speed=s;
+        speed = s;
     }
+
     public int GetSpeed()
     {
         return speed;
     }
+
     public void Start()
     {
-        isRun=true;
+        isRun = true;
     }
+
     public void Suspend()
     {
-        isRun=!isRun;
+        isRun = !isRun;
     }
+
     public void ReSet()
     {
-        isRun=false;
-        speed=1;
-        currentTime =startTime.clone();
+        isRun = false;
+        speed = 1;
+        currentTime = startTime.clone();
         display();
     }
 
@@ -123,7 +131,6 @@ public class DisplayController
     {
         ChangeFrame(-1);
     }
-
 
     private boolean CheckTime()
     {
@@ -163,11 +170,20 @@ public class DisplayController
 
     private void display()
     {
-        if(CheckTime()==false)
+        if (CheckTime() == false)
         {
             return;
         }
         displayLayer.removeAllRenderables();
+
+        if (isShowGroundRegion == true)
+        {
+            SurfacePolygon[] spArray = RegionManagerClass.MultiPolygon2SurfacePolygon(ground);
+            for (int i = 0; i < spArray.length; i++)
+            {
+                displayLayer.addRenderable(spArray[i]);
+            }
+        }
 
         if (satelliteElemList != null && satelliteElemList.size() > 0)
         {
@@ -175,7 +191,6 @@ public class DisplayController
             {
 
                 //遍历每一颗卫星
-                
                 //是否显示卫星轨迹
                 if (isShowSatelliteOrbit == true)
                 {
@@ -208,23 +223,16 @@ public class DisplayController
 
             }
         }
-        
-        if (isShowGroundRegion == true) {
-            SurfacePolygon[] spArray = RegionManagerClass.MultiPolygon2SurfacePolygon(ground);
-            for (int i = 0; i < spArray.length; i++) {
-                displayLayer.addRenderable(spArray[i]);
-            }
-        }
-        /////////////////////////////////////////////////////////
 
+        /////////////////////////////////////////////////////////
         ShowInfoBoard();
-        
+
         wwd.redraw();
     }
 
     private void ShowInfoBoard()
-    { 
-        String infoString="当前时间 : "+currentTime.toBJTime();
+    {
+        String infoString = "当前时间 : " + currentTime.toBJTime();
         AnnotationAttributes attr = new AnnotationAttributes();
         attr.setBackgroundColor(new Color(0.2f, 0.2f, 0.2f, 0f));
         attr.setTextColor(Color.YELLOW);
@@ -233,7 +241,7 @@ public class DisplayController
         attr.setCornerRadius(0);
         attr.setSize(new Dimension(300, 0));
         attr.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT); // use strict dimension width - 200
-        attr.setFont(new Font("宋体",Font.BOLD,18));
+        attr.setFont(new Font("宋体", Font.BOLD, 18));
         attr.setBorderWidth(0);
         attr.setHighlightScale(1);             // No highlighting either
 
