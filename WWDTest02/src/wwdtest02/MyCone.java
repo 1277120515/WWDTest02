@@ -19,6 +19,7 @@ import gov.nasa.worldwind.render.ShapeAttributes;
 import gov.nasa.worldwindx.examples.ApplicationTemplate;
 import static gov.nasa.worldwindx.examples.ApplicationTemplate.insertBeforeCompass;
 
+
 /**
  *
  * @author ZZL
@@ -52,10 +53,20 @@ ShapeAttributes attrs2 = new BasicShapeAttributes();
             attrs2.setOutlineWidth(2d);
             attrs2.setDrawOutline(false);
 
+            double groundPosLon = 120;
+            double groundPosLat = 40;
+            double groundPosHeight = 1000e3;
 
-           double groundPosLon=120;
-           double groundPosLat=40;
-           double groundPosHeight=1000e3;
+            double groundX = 0;
+            double groundY = 0;
+            double groundZ = 0;
+
+            double satX = 0;
+            double satY = 0;
+            double satZ = 0;
+
+            double tilt = Math.atan2(satY, satZ) - Math.atan2(groundY, groundZ);
+            double roll = Math.atan2(satX, Math.sqrt(satZ * satZ + satY * satY)) - Math.atan2(satX, Math.sqrt(groundZ * groundZ + groundY * groundY));
 
             Ellipsoid ellipsoid3 = new Ellipsoid(Position.fromDegrees(groundPosLat, groundPosLon, groundPosHeight), 50000, 50000, 50000);
             ellipsoid3.setAltitudeMode(WorldWind.RELATIVE_TO_GROUND);
