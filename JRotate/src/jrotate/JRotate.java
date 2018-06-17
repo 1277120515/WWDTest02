@@ -20,14 +20,20 @@ public class JRotate
         // TODO code application logic here
 
         double x, y, z;
-        x = MathUtils.deg2rad * 90;
-        y = MathUtils.deg2rad * 90;
-        z = MathUtils.deg2rad * 0;
+        x = MathUtils.deg2rad * 50;
+        y = MathUtils.deg2rad * 50;
+        z = MathUtils.deg2rad * 90;
 
-        double[] xyz = new double[]{x,y,z};
+        double[] xyz = new double[]{x, y, z};
         double[][] mat;// = new double[3][3];
 
-        mat=Euler2Mat(xyz);
+        mat = Euler2Mat(xyz);
+        xyz = Mat2Euler(mat);
+
+        x = MathUtils.rad2deg * xyz[0];
+        y = MathUtils.rad2deg * xyz[1];
+        z = MathUtils.rad2deg * xyz[2];
+
         
         double[] vec=new double[]{1,1,1};
         vec=MathUtils.mult(mat, vec);
@@ -36,7 +42,7 @@ public class JRotate
         System.out.println("End");
     }
 
-    //Å·À­½Ç --> Ğı×ª¾ØÕó
+    //Å·À­½Ç --> Ğı×ª¾ØÕó(¾ØÕóxÏòÁ¿)
     public static double[][] Euler2Mat(double[] xyz)
     {
         double x, y, z;
@@ -66,7 +72,8 @@ public class JRotate
         //mat[0][0] = r11;mat[0][1] = r12;mat[0][2] = r13;mat[1][0] = r21;mat[1][1] = r22;mat[1][2] = r23;mat[2][0] = r31;mat[2][1] = r32;mat[2][2] = r33;
     }
 
-    public static void Mat2Euler(double[][] mat, double[] xyz)
+    //Ğı×ª¾ØÕó(¾ØÕóxÏòÁ¿) --> Å·À­½Ç
+    public static double[] Mat2Euler(double[][] mat)
     {
         double x, y, z;
         double r11, r12, r13, r21, r22, r23, r31, r32, r33;
@@ -80,15 +87,16 @@ public class JRotate
         r31 = mat[2][0];
         r32 = mat[2][1];
         r33 = mat[2][2];
-
-        x = Math.atan2(r32, r33);
-        y = Math.atan2(-r31, Math.sqrt(r32 * r32 + r33 * r33));
-        z = Math.atan2(r21, r11);
-
-        xyz[0] = x;
-        xyz[1] = y;
-        xyz[2] = z;
-
+        double sy=Math.sqrt(r11*r11+r21*r21);
+        if (sy > 1e-6) {
+            x = Math.atan2(r32, r33);
+            y = Math.atan2(-r31, sy);
+            z = Math.atan2(r21, r11);
+        } else {
+            x = Math.atan2(-r23, r22);
+            y = Math.atan2(-r31, sy);
+            z = 0;
+        }
+        return new double[]{x,y,z};
     }
-
 }
