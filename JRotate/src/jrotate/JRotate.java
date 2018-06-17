@@ -3,10 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package jrotate;
-
-
 
 /**
  *
@@ -21,49 +18,52 @@ public class JRotate
     public static void main(String[] args)
     {
         // TODO code application logic here
+
+        double x, y, z;
+        x = MathUtils.deg2rad * 90;
+        y = MathUtils.deg2rad * 90;
+        z = MathUtils.deg2rad * 0;
+
+        double[] xyz = new double[]{x,y,z};
+        double[][] mat;// = new double[3][3];
+
+        mat=Euler2Mat(xyz);
         
-        double[] xyz=new double[]{0.1,7.9,0.3};
-        double[][] mat=new double[3][];
-        mat[0]=new double[3];
-        mat[1]=new double[3];
-        mat[2]=new double[3];
+        double[] vec=new double[]{1,1,1};
+        vec=MathUtils.mult(mat, vec);
         
-        Euler2Mat(xyz,mat);
-        
-        Mat2Euler(mat,xyz);
-        
+
         System.out.println("End");
     }
 
-    public static void Euler2Mat(double[] xyz, double[][] mat)
+    //Å·À­½Ç --> Ðý×ª¾ØÕó
+    public static double[][] Euler2Mat(double[] xyz)
     {
         double x, y, z;
-        double r11, r12, r13, r21, r22, r23, r31, r32, r33;
+        
         x = xyz[0];
         y = xyz[1];
         z = xyz[2];
-        
-        r11 = Math.cos(y) * Math.cos(z);
-        r12 = Math.sin(x) * Math.sin(y) * Math.cos(z) - Math.cos(x) * Math.sin(z);
-        r13 = Math.cos(x) * Math.sin(y) * Math.cos(z) + Math.sin(x) * Math.sin(z);
-        
-        r21 = Math.cos(y) * Math.sin(z);
-        r22 = Math.sin(x) * Math.sin(y) * Math.sin(z) + Math.cos(x) * Math.cos(z);
-        r23 = Math.cos(x) * Math.sin(y) * Math.sin(z) - Math.sin(x) * Math.cos(z);
 
-        r31 = -Math.sin(y);
-        r32 = Math.sin(x) * Math.cos(y);
-        r33 = Math.cos(x) * Math.cos(y);
+        double[][] Rx = {{1, 0, 0}, {0, Math.cos(x), -Math.sin(x)}, {0, Math.sin(x), Math.cos(x)}};
+        double[][] Ry = {{Math.cos(y), 0, Math.sin(y)}, {0, 1, 0}, {-Math.sin(y), 0, Math.cos(y)}};
+        double[][] Rz = {{Math.cos(z), -Math.sin(z), 0}, {Math.sin(z), Math.cos(z), 0}, {0, 0, 1}};
+        
+        double[][] mat=MathUtils.mult(MathUtils.mult(Rz, Ry),Rx);
+        //mat=MathUtils.mult(Rz, Ry);
 
-        mat[0][0] = r11;
-        mat[0][1] = r12;
-        mat[0][2] = r13;
-        mat[1][0] = r21;
-        mat[1][1] = r22;
-        mat[1][2] = r23;
-        mat[2][0] = r31;
-        mat[2][1] = r32;
-        mat[2][2] = r33;
+        return mat;
+        //double r11, r12, r13, r21, r22, r23, r31, r32, r33;
+        //r11 = Math.cos(y) * Math.cos(z);
+        //r12 = Math.sin(x) * Math.sin(y) * Math.cos(z) - Math.cos(x) * Math.sin(z);
+        //r13 = Math.cos(x) * Math.sin(y) * Math.cos(z) + Math.sin(x) * Math.sin(z);
+        //r21 = Math.cos(y) * Math.sin(z);
+        //r22 = Math.sin(x) * Math.sin(y) * Math.sin(z) + Math.cos(x) * Math.cos(z);
+        //r23 = Math.cos(x) * Math.sin(y) * Math.sin(z) - Math.sin(x) * Math.cos(z);
+        //r31 = -Math.sin(y);
+        //r32 = Math.sin(x) * Math.cos(y);
+        //r33 = Math.cos(x) * Math.cos(y);
+        //mat[0][0] = r11;mat[0][1] = r12;mat[0][2] = r13;mat[1][0] = r21;mat[1][1] = r22;mat[1][2] = r23;mat[2][0] = r31;mat[2][1] = r32;mat[2][2] = r33;
     }
 
     public static void Mat2Euler(double[][] mat, double[] xyz)
