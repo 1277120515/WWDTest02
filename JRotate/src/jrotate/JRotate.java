@@ -25,19 +25,20 @@ public class JRotate
         z = MathUtils.deg2rad * 90;
 
         double[] xyz = new double[]{x, y, z};
-        double[][] mat;// = new double[3][3];
-
-        mat = Euler2Mat(xyz);
-        xyz = Mat2Euler(mat);
-
-        x = MathUtils.rad2deg * xyz[0];
-        y = MathUtils.rad2deg * xyz[1];
-        z = MathUtils.rad2deg * xyz[2];
-
+        double[][] mat1,mat2;
         
-        double[] vec=new double[]{1,1,1};
-        vec=MathUtils.mult(mat, vec);
         
+        double vec[]={12,34,56};
+
+        mat1 = Euler2Mat(xyz);
+        double qua[]=Euler2Qua(xyz);
+        mat2=Qua2Mat(qua);
+        
+        double[] vec1,vec2;
+        vec1=MathUtils.mult(mat1, vec);        
+        vec2=MathUtils.mult(mat2, vec);
+
+
 
         System.out.println("End");
     }
