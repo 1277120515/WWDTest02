@@ -45,31 +45,15 @@ public class JRotate
     //欧拉角 --> 旋转矩阵(矩阵x向量)
     public static double[][] Euler2Mat(double[] xyz)
     {
-        double x, y, z;
-        
+        double x, y, z;  
         x = xyz[0];
         y = xyz[1];
         z = xyz[2];
-
         double[][] Rx = {{1, 0, 0}, {0, Math.cos(x), -Math.sin(x)}, {0, Math.sin(x), Math.cos(x)}};
         double[][] Ry = {{Math.cos(y), 0, Math.sin(y)}, {0, 1, 0}, {-Math.sin(y), 0, Math.cos(y)}};
         double[][] Rz = {{Math.cos(z), -Math.sin(z), 0}, {Math.sin(z), Math.cos(z), 0}, {0, 0, 1}};
-        
         double[][] mat=MathUtils.mult(MathUtils.mult(Rz, Ry),Rx);
-        //mat=MathUtils.mult(Rz, Ry);
-
         return mat;
-        //double r11, r12, r13, r21, r22, r23, r31, r32, r33;
-        //r11 = Math.cos(y) * Math.cos(z);
-        //r12 = Math.sin(x) * Math.sin(y) * Math.cos(z) - Math.cos(x) * Math.sin(z);
-        //r13 = Math.cos(x) * Math.sin(y) * Math.cos(z) + Math.sin(x) * Math.sin(z);
-        //r21 = Math.cos(y) * Math.sin(z);
-        //r22 = Math.sin(x) * Math.sin(y) * Math.sin(z) + Math.cos(x) * Math.cos(z);
-        //r23 = Math.cos(x) * Math.sin(y) * Math.sin(z) - Math.sin(x) * Math.cos(z);
-        //r31 = -Math.sin(y);
-        //r32 = Math.sin(x) * Math.cos(y);
-        //r33 = Math.cos(x) * Math.cos(y);
-        //mat[0][0] = r11;mat[0][1] = r12;mat[0][2] = r13;mat[1][0] = r21;mat[1][1] = r22;mat[1][2] = r23;mat[2][0] = r31;mat[2][1] = r32;mat[2][2] = r33;
     }
 
     //旋转矩阵(矩阵x向量) --> 欧拉角
@@ -99,4 +83,34 @@ public class JRotate
         }
         return new double[]{x,y,z};
     }
+
+
+    //欧拉角 --> 四元数
+    public static double[] Euler2Qua(double[] xyz)
+    {
+        double x, y, z;
+        x = xyz[0];
+        y = xyz[1];
+        z = xyz[2];
+        double qw, qx, qy, qz;
+        qw = Math.cos(x / 2) * Math.cos(y / 2) * Math.cos(z / 2) + Math.sin(x / 2) * Math.sin(y / 2) * Math.sin(z / 2);
+        qx = Math.sin(x / 2) * Math.cos(y / 2) * Math.cos(z / 2) - Math.cos(x / 2) * Math.sin(y / 2) * Math.sin(z / 2);
+        qy = Math.cos(x / 2) * Math.sin(y / 2) * Math.cos(z / 2) + Math.sin(x / 2) * Math.cos(y / 2) * Math.sin(z / 2);
+        qz = Math.cos(x / 2) * Math.cos(y / 2) * Math.sin(z / 2) - Math.sin(x / 2) * Math.sin(y / 2) * Math.cos(z / 2);
+        return new double[]{qw, qx, qy, qz};
+    }
+    
+    //欧拉角 --> 四元数
+    public static double[] Qua2Euler(double[] wxyz)
+    {
+        double qw, qx, qy, qz;
+        qw = wxyz[0];
+        qx = wxyz[1];
+        qy = wxyz[2];
+        qz = wxyz[3];
+
+    }
+
+    
+
 }
