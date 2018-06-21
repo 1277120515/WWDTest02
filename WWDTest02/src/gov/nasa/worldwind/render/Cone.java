@@ -162,6 +162,7 @@ public class Cone extends RigidShape
         return this.faceCount;
     }
 
+    @Override
     public int getSubdivisions()
     {
         return this.subdivisions;
@@ -190,6 +191,7 @@ public class Cone extends RigidShape
      * @param dc        the current drawContext.
      * @param shapeData the current globe-specific shape data
      */
+    @Override
     protected void computeSubdivisions(DrawContext dc, ShapeData shapeData)
     {
         // test again possible subdivision values
@@ -261,6 +263,7 @@ public class Cone extends RigidShape
      *
      * @param shapeData this shape's current shape data.
      */
+    @Override
     protected void makeGeometry(ShapeData shapeData)
     {
         // attempt to retrieve a cached unit box with the same number of subdivisions
