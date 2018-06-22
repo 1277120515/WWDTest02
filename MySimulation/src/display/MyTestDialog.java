@@ -317,7 +317,10 @@ public class MyTestDialog extends JDialog
         satelliteElem.shotUnitList = new ArrayList<ShotUnit>();
 
         shotUnit = GetShotElem(pvo, new Time("2014-08-09 09:15:20.000"), new Time("2014-08-09 09:17:00.000"), 8, 20, 30, 2);
+
         satelliteElem.shotUnitList.add(shotUnit);
+        
+        satelliteElem.S
 
         dc.satelliteElemList.add(satelliteElem);
 

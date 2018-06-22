@@ -21,14 +21,39 @@ import java.util.ArrayList;
 public class SatelliteElem
 {
 
+    /**
+     *卫星名称
+     */
     public String satelliteName;
-    //public Geometry ground;
+
+    /**
+     *卫星运行开始时间
+     */
     public Time startTime;
+
+    /**
+     *卫星运行停止时间
+     */
     public Time endTime;
+
+    /**
+     *卫星位置数组。
+     * 长度 = startTime与endTime间隔的秒数。
+     * startTime与endTime之间的每一秒 对应 satellitePosArray中的一个元素。
+     */
     public Position[] satellitePosArray;
 
-    public ArrayList<ShotUnit> shotUnitList;  
+    /**
+     *卫星拍摄条带数组。
+     */
+    public ArrayList<ShotUnit> shotUnitList;
 
+    /**
+     *
+     * @param layer 图层
+     * @param currentTime 当前时间，应满足：startTime &lt= currentTime &lt= endTime
+     * 
+     */
     public void ShowSatellite(RenderableLayer layer, Time currentTime)
     {
 
@@ -49,23 +74,22 @@ public class SatelliteElem
             AnnotationAttributes attr = new AnnotationAttributes();
             attr.setBackgroundColor(new Color(0, 0, 0, 0));
             attr.setBorderColor(new Color(255, 255, 255, 128));
-
             attr.setTextColor(Color.yellow);
             attr.setBorderWidth(2);
             attr.setCornerRadius(5);
             attr.setInsets(new Insets(8, 8, 8, 8));
             attr.setHighlighted(false);
             attr.setLeaderGapWidth(10);
-
             GlobeAnnotation satelliteNameAnnotation = new GlobeAnnotation(satelliteName, satellitePosArray[satelliteIndex], attr);
-            //satelliteNameAnnotation.setMinActiveAltitude(1000 * 1000);
-            //satelliteNameAnnotation.setMaxActiveAltitude(1500 * 1000);
             layer.addRenderable(satelliteNameAnnotation);
-
         }
-
     }
 
+    /**
+     *
+     * @param layer 图层
+     * @param currentTime 当前时间
+     */
     public void ShowOrbit(RenderableLayer layer, Time currentTime)
     {
         ShapeAttributes attrs = new BasicShapeAttributes();
@@ -93,11 +117,21 @@ public class SatelliteElem
         layer.addRenderable(path);
     }
 
+    /**
+     *
+     * @param layer 图层 
+     * @param currentTime 当前时间
+     */
     public void ShowMaxSensorTriangle(RenderableLayer layer, Time currentTime)
     {
         ShowTriangle(layer, currentTime, true);
     }
 
+    /**
+     *
+     * @param layer 图层 
+     * @param currentTime 当前时间
+     */
     public void ShowSensorTriangle(RenderableLayer layer, Time currentTime)
     {
         ShowTriangle(layer, currentTime, false);
@@ -199,11 +233,21 @@ public class SatelliteElem
 
     }
 
+    /**
+     *
+     * @param layer
+     * @param currentTime
+     */
     public void ShowCourageRange(RenderableLayer layer, Time currentTime)
     {
         ShowRange(layer, currentTime, false);
     }
 
+    /**
+     *
+     * @param layer
+     * @param currentTime
+     */
     public void ShowMaxCourageRange(RenderableLayer layer, Time currentTime)
     {
 
