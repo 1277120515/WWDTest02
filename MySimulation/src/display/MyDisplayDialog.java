@@ -52,13 +52,9 @@ public class MyDisplayDialog extends JDialog
 
         displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("»˝Œ¨œ‘ æ");
 
-        // wwd.getModel().getLayers().add(displayLayer);
-        //ActiveLayersPanel activeLayersPanel=(ActiveLayersPanel)controller.getRegisteredObject(Constants.FEATURE_ACTIVE_LAYERS_PANEL);
         InitDialog();
-
         InitSatellitePos();
         InitScene();
-
         InitTimer();
     }
 
@@ -173,11 +169,9 @@ public class MyDisplayDialog extends JDialog
             }
         });
         box.add(btn);
-
         panel = new JPanel();
         panel.add(box);
         resbox.add(panel);
-
         return resbox;
 
     }

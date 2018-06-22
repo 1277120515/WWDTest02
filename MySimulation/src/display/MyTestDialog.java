@@ -320,7 +320,6 @@ public class MyTestDialog extends JDialog
 
         satelliteElem.shotUnitList.add(shotUnit);
         
-        satelliteElem.S
 
         dc.satelliteElemList.add(satelliteElem);
 

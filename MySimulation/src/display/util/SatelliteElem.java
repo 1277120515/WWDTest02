@@ -136,7 +136,12 @@ public class SatelliteElem
     {
         ShowTriangle(layer, currentTime, false);
     }
-
+    /**
+     *
+     * @param layer 图层 
+     * @param currentTime 当前时间
+     * @param isMax 显示最大拍摄范围 还是显示实际拍摄范围
+     */
     private void ShowTriangle(RenderableLayer layer, Time currentTime, boolean isMax)
     {
         //显示传感器三角
@@ -235,8 +240,8 @@ public class SatelliteElem
 
     /**
      *
-     * @param layer
-     * @param currentTime
+     * @param layer 图层
+     * @param currentTime 当前时间
      */
     public void ShowCourageRange(RenderableLayer layer, Time currentTime)
     {
@@ -245,14 +250,20 @@ public class SatelliteElem
 
     /**
      *
-     * @param layer
-     * @param currentTime
+     * @param layer 图层
+     * @param currentTime 当前时间
      */
     public void ShowMaxCourageRange(RenderableLayer layer, Time currentTime)
     {
 
     }
 
+        /**
+     *
+     * @param layer 图层 
+     * @param currentTime 当前时间
+     * @param isMax 显示最大拍摄范围 还是显示实际拍摄范围
+     */
     private void ShowRange(RenderableLayer layer, Time currentTime, boolean isMax)
     {
         for (ShotUnit shotUnit : shotUnitList)
