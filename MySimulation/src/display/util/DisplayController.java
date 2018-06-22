@@ -274,36 +274,7 @@ public class DisplayController
 
             }
         }
-
-        //显示右下角信息板
-        ShowInfoBoard();
         //重绘
         wwd.redraw();
-    }
-    //显示右下角信息板
-    private void ShowInfoBoard()
-    {
-        String infoString = "当前时间 : " + currentTime.toBJTime();
-        infoString+=String.format("\nCurrent Speed: %d", speed);
-        
-        AnnotationAttributes attr = new AnnotationAttributes();
-        attr.setBackgroundColor(new Color(0.2f, 0.2f, 0.2f, 0f));
-        attr.setTextColor(Color.YELLOW);
-        attr.setLeaderGapWidth(0);
-        attr.setLeader(AVKey.SHAPE_NONE);
-        attr.setCornerRadius(0);
-        attr.setSize(new Dimension(300, 0));
-        attr.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT);
-        attr.setFont(new Font("宋体", Font.BOLD, 18));
-        attr.setBorderWidth(0);
-        attr.setHighlightScale(1);            
-
-        ScreenRelativeAnnotation infoAnnotation = new ScreenRelativeAnnotation(infoString, 0.99, 0.01);
-        infoAnnotation.setKeepFullyVisible(true);
-        infoAnnotation.setXMargin(5);
-        infoAnnotation.setYMargin(5);
-        infoAnnotation.setAttributes(attr);
-
-        displayLayer.addRenderable(infoAnnotation);
     }
 }
