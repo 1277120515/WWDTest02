@@ -27,35 +27,51 @@ import simulationpanel.RegionManagerClass;
  */
 public class DisplayController
 {
-    public boolean isShowSatelliteOrbit = false;
-    public boolean isShowSensor = false;
-    public boolean isShowGroundRegion = false;
-    public boolean isShowMaxCourageRange = false;
-    public boolean isShowCourageRange = false;
-    public boolean isShowSatellite = false;
+    public boolean isShowSatelliteOrbit = false;    //是否显示卫星轨道
+    public boolean isShowSensor = false;            //是否显示传感器三角
+    public boolean isShowGroundRegion = false;      //是否显示地面任务区域
+    public boolean isShowMaxCourageRange = false;   //是否显示最大拍摄范围
+    public boolean isShowCourageRange = false;      //是否显示当前传感器覆盖范围
+    public boolean isShowSatellite = false;         //是否显示卫星
 
-    public ArrayList<SatelliteElem> satelliteElemList;
-    public MultiPolygon ground;
+    public ArrayList<SatelliteElem> satelliteElemList;  //卫星列表
+    public MultiPolygon ground;                         //地面任务区域
 
+    /**
+     * 拍摄场景开始时间
+     */
     public Time startTime;
+
+    /**
+     *拍摄场景结束时间
+     */
     public Time endTime;
 
-    private RenderableLayer displayLayer;
+    private RenderableLayer displayLayer;//WWD 3D仿真图层
     WorldWindow wwd;
 
+    /**
+     *
+     * @param wwd WorldWind
+     * @param layer WWD 3D仿真图层
+     */
     public DisplayController(WorldWindow wwd, RenderableLayer layer)
     {
         displayLayer = layer;
         this.wwd = wwd;
 
-        InitTimer();
+        InitTimer();//初始化定时器
     }
 
+    /**
+     * 当前时间 
+     */
     public Time currentTime;
 
-    private boolean isRun = false;
-    private int speed = 1;
+    private boolean isRun = false;//是否处于仿真进行状态 true：正在进行仿真 false：暂停
+    private int speed = 1; //仿真速度  
 
+    //定时器初始化，每秒执行一次
     private void InitTimer()
     {
         TimerTask task = new TimerTask()
@@ -63,36 +79,54 @@ public class DisplayController
             @Override
             public void run()
             {
-                if (isRun == true)
+                //该函数每秒执行一次
+                if (isRun == true)          //通过查询isRun的值，判断是否切换帧
                 {
-                    ChangeFrame(speed);
+                    ChangeFrame(speed);     //切换帧
                 }
             }
         };
         Timer timer = new Timer();
-        timer.schedule(task, 0, 1000);
+        timer.schedule(task, 0, 1000);      //定时间隔1秒
     }
 
+    /**
+     *
+     * @param s 仿真速度
+     */
     public void SetSpeed(int s)
     {
         speed = s;
     }
 
+    /**
+     *
+     * @return 仿真速度
+     */
     public int GetSpeed()
     {
         return speed;
     }
 
+    /**
+     * 仿真开始
+     */
     public void Start()
     {
         isRun = true;
     }
 
+    /**
+     * 仿真暂停
+     */
     public void Suspend()
     {
         isRun = !isRun;
     }
 
+    /**
+     * 仿真重置。返回初始状态
+     */
     public void Reset()
     {
         isRun = false;
@@ -101,6 +135,10 @@ public class DisplayController
         display();
     }
 
+    /**
+     *
+     * @param second
+     */
     public void ChangeFrame(int second)
     {
         if (second >= 0)
@@ -108,29 +146,39 @@ public class DisplayController
             currentTime.addSeconds(second);
             if (currentTime.after(endTime))
             {
-                currentTime.addSeconds(-second);
+                currentTime.addSeconds(-second);    //当前时间减少second秒
             }
         } else
         {
             currentTime.addSeconds(second);
             if (currentTime.before(startTime))
             {
-                currentTime.addSeconds(-second);
+                currentTime.addSeconds(-second);//当前时间增加second秒
             }
         }
         display();
     }
 
+    /**
+     * 下一帧
+     */
     public void NextFrame()
     {
         ChangeFrame(1);
     }
 
+    /**
+     * 上一帧
+     */
     public void LastFrame()
     {
         ChangeFrame(-1);
     }
 
+     /**
+     * 检验startTime currentTime endTime是否合法，应满足：
+     * DisplayController.startTime == SatelliteElem.startTime <= DisplayController.currentTime <= DisplayController.endTime == SatelliteElem.EndTime
+     */
     private boolean CheckTime()
     {
         if (startTime.afterOrEqual(endTime))
@@ -167,14 +215,18 @@ public class DisplayController
         return true;
     }
 
+     /**
+     * 显示场景
+     */
     private void display()
     {
-        if (CheckTime() == false)
+        if (CheckTime() == false)//判断几个时间是否合法
         {
             return;
         }
-        displayLayer.removeAllRenderables();
+        displayLayer.removeAllRenderables();//去除上一帧的所有物体
 
+        //显示地面任务区域
         if (isShowGroundRegion == true)
         {
             SurfacePolygon[] spArray = RegionManagerClass.MultiPolygon2SurfacePolygon(ground);
@@ -223,12 +275,12 @@ public class DisplayController
             }
         }
 
-        /////////////////////////////////////////////////////////
+        //显示右下角信息板
         ShowInfoBoard();
-
+        //重绘
         wwd.redraw();
     }
-
+    //显示右下角信息板
     private void ShowInfoBoard()
     {
         String infoString = "当前时间 : " + currentTime.toBJTime();
@@ -241,10 +293,10 @@ public class DisplayController
         attr.setLeader(AVKey.SHAPE_NONE);
         attr.setCornerRadius(0);
         attr.setSize(new Dimension(300, 0));
-        attr.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT); // use strict dimension width - 200
+        attr.setAdjustWidthToText(AVKey.SIZE_FIT_TEXT);
         attr.setFont(new Font("宋体", Font.BOLD, 18));
         attr.setBorderWidth(0);
-        attr.setHighlightScale(1);             // No highlighting either
+        attr.setHighlightScale(1);            
 
         ScreenRelativeAnnotation infoAnnotation = new ScreenRelativeAnnotation(infoString, 0.99, 0.01);
         infoAnnotation.setKeepFullyVisible(true);

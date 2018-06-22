@@ -30,11 +30,12 @@ import simulationpanel.RegionManagerClass;
  *
  * @author ZZL
  */
+//该类的作用是 将外部的数据 导入到 DisplayController中，并通过DisplayController控制场景的开始，暂停等动作
 public class MyTestDialog extends JDialog
 {
-    Controller controller;
-    WorldWindow wwd;
-    RenderableLayer displayLayer;
+    Controller controller; //WWD的内部变量
+    WorldWindow wwd; //WWD的引用
+    RenderableLayer displayLayer; //3D仿真图层的引用
 
     DisplayController displayController;
 
@@ -44,15 +45,16 @@ public class MyTestDialog extends JDialog
         this.controller = c;
         this.wwd = c.getWWd();
 
-        displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");
+        displayLayer = (RenderableLayer) wwd.getModel().getLayers().getLayerByName("三维显示");//获取图层
 
         displayController = this.CalDisplayController();
         displayController.Reset();
 
+        //界面设置
         Box box = Box.createVerticalBox();
         JButton btn;
 
-        btn = new JButton("开始");
+        btn = new JButton("开始");//开始按钮
         btn.addActionListener(new ActionListener()
         {
             @Override
@@ -63,7 +65,7 @@ public class MyTestDialog extends JDialog
         });
         box.add(btn);
 
-        btn = new JButton("暂停");
+        btn = new JButton("暂停");//暂停按钮
         btn.addActionListener(new ActionListener()
         {
             @Override
@@ -169,7 +171,18 @@ public class MyTestDialog extends JDialog
         this.pack();
     }
 
-    private ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle, int type)
+    /**
+     *
+     * @param pvo 卫星在shotStartTime和shotEndTime之间的位置数组。长度 = shotStartTime和shotEndTime之间的秒数
+     * @param shotStartTime 条带开始时间
+     * @param shotEndTime 条带结束时间
+     * @param swingAngle 拍摄该条带时的侧摆角
+     * @param fov 传感器视场角
+     * @param maxSwingAngle 最大侧摆范围
+     * @param type 侧摆类型。1：不侧摆 2：边拍摄，边侧摆 3：拍摄->侧摆->拍摄
+     * @return 条带
+     */
+    public ShotUnit GetShotElem(PositionVelocityOutput[] pvo, Time shotStartTime, Time shotEndTime, double swingAngle, double fov, double maxSwingAngle, int type)
     {
         ArrayList<Position> leftPosList = new ArrayList<Position>();
         ArrayList<Position> rightPosList = new ArrayList<Position>();
@@ -230,6 +243,7 @@ public class MyTestDialog extends JDialog
             }
         }
 
+        //填充ShotUnit结构体
         ShotUnit shotElem = new ShotUnit();
         shotElem.startTime = shotStartTime.clone();
         shotElem.endTime = shotEndTime.clone();
@@ -241,6 +255,9 @@ public class MyTestDialog extends JDialog
         return shotElem;
     }
 
+    //将计算得到的卫星、条带数据导入DisplayController中
+    //未来需要修改为：
+    //生成将服务端的数据导入DisplayController中
     private DisplayController CalDisplayController()
     {
         Time simuStartTime = new Time("2014-08-09 09:15:00.000");
