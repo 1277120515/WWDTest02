@@ -43,5 +43,6 @@
     <!-- Menus just point to other things, so instantiate them last -->
     
     <Feature className="gov.nasa.worldwindx.applications.worldwindow.features.MySimulationFeature"/>
-    <Feature className="display.MyDisplayFeature"/>
+    <Feature className="gov.nasa.worldwindx.applications.worldwindow.features.MyDisplayFeature"/>
+
 </Configuration>
