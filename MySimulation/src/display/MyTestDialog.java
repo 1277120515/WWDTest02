@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package display;
-
+ 
 import display.util.DisplayController;
 import display.util.SatelliteElem;
 import display.util.ShotUnit;
