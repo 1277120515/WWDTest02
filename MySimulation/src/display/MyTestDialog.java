@@ -5,9 +5,6 @@
  */
 package display;
   
-import display.util.DisplayController;
-import display.util.SatelliteElem;
-import display.util.ShotUnit;
 import coverage.OneDayCoverage;
 import coverage.iostruct.PositionVelocityOutput;
 import coverage.iostruct.ProcessResource;
