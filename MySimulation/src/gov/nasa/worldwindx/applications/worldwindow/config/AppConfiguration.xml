@@ -42,6 +42,6 @@
     <Feature className="gov.nasa.worldwindx.applications.worldwindow.features.UTMGraticule"/>
     <!-- Menus just point to other things, so instantiate them last -->
     
-    <!--<Feature className="gov.nasa.worldwindx.applications.worldwindow.features.MySimulationFeature"/>-->
+    <Feature className="gov.nasa.worldwindx.applications.worldwindow.features.MySimulationFeature"/>
     <Feature className="display.MyDisplayFeature"/>
 </Configuration>

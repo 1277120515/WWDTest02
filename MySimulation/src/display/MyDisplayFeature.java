@@ -6,14 +6,16 @@
 
 package display;
 
+import display.MyTestDialog;
 import gov.nasa.worldwindx.applications.worldwindow.core.Constants;
 import gov.nasa.worldwindx.applications.worldwindow.core.Controller;
 import gov.nasa.worldwindx.applications.worldwindow.core.Registry;
 import gov.nasa.worldwindx.applications.worldwindow.features.AbstractFeature;
+import gov.nasa.worldwindx.applications.worldwindow.features.AbstractFeature;
 import gov.nasa.worldwindx.applications.worldwindow.util.Util;
 import javax.swing.JDialog;
 import javax.swing.SwingConstants;
-
+ 
 /**
  *
  * @author ZZL

@@ -1,2 +1,0 @@
-coverage.OneDayCoverage
-coverage.CalBestSwingAngleClass

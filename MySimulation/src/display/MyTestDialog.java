@@ -4,7 +4,7 @@
  * and open the template in the editor.
  */
 package display;
- 
+  
 import display.util.DisplayController;
 import display.util.SatelliteElem;
 import display.util.ShotUnit;
@@ -25,9 +25,9 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import javax.swing.JButton;
 import simulationpanel.RegionManagerClass;
-
+ 
 /**
- *
+ * 
  * @author ZZL
  */
 //该类的作用是 将外部的数据 导入到 DisplayController中，并通过DisplayController控制场景的开始，暂停等动作
